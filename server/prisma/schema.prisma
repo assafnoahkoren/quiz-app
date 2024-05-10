@@ -12,3 +12,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DB_URL")
 }
+
+model User {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  name     String?
+  password String
+}
+
+model Subject {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  parentId    String?
+  Parent      Subject?  @relation("subjectParent", fields: [parentId], references: [id])
+  Subjects    Subject[] @relation("subjectParent")
+}
