@@ -1,2 +1,4 @@
+import 'dotenv/config'
+
 const text: string = 'Hello, world!';
-console.log(text);
+console.log(process.env.DB_URL);
