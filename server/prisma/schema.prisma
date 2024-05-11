@@ -21,10 +21,20 @@ model User {
 }
 
 model Subject {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   description String?
   parentId    String?
-  Parent      Subject?  @relation("subjectParent", fields: [parentId], references: [id])
-  Subjects    Subject[] @relation("subjectParent")
+  Parent      Subject?   @relation("subjectParent", fields: [parentId], references: [id])
+  Subjects    Subject[]  @relation("subjectParent")
+  Question    Question[]
+}
+
+model Question {
+  id            String   @id @default(cuid())
+  subjectId     String
+  Subject       Subject  @relation(fields: [subjectId], references: [id])
+  text          String
+  correctAnswer String
+  otherAnswers  String[]
 }
