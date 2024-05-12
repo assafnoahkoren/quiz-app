@@ -18,6 +18,7 @@ model User {
   email    String  @unique
   name     String?
   password String
+  Exam     Exam[]
 }
 
 model Subject {
@@ -28,6 +29,7 @@ model Subject {
   Parent      Subject?   @relation("subjectParent", fields: [parentId], references: [id])
   Subjects    Subject[]  @relation("subjectParent")
   Question    Question[]
+  Exam        Exam[]
 }
 
 model Question {
@@ -37,4 +39,16 @@ model Question {
   text          String
   correctAnswer String
   otherAnswers  String[]
+  Exam          Exam?    @relation(fields: [examId], references: [id])
+  examId        String?
+}
+
+model Exam {
+  id        String  @id @default(cuid())
+  subjectId String
+  Subject   Subject @relation(fields: [subjectId], references: [id])
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  questions Question[]
+  answers   String[]
 }
