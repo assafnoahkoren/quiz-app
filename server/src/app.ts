@@ -4,9 +4,11 @@ import bodyParser from "body-parser";
 import { Prisma, PrismaClient } from "@prisma/client";
 import "express-async-errors";
 import jwt from "jwt-simple";
+import cors from 'cors';
 
 const db = new PrismaClient();
 const app = express();
+app.use(cors())
 
 app.use(bodyParser.json());
 
@@ -39,7 +41,7 @@ app.post("/auth/register", async (req, res) => {
 // 1. Gets email and password
 // 2. Check if user exists in the database with the same password
 // 3. If user exists, return a jwt
-app.get("/auth/login", async (req, res) => {
+app.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await db.user.findFirst({
     where: {
