@@ -3,7 +3,9 @@ function App() {
 
   return (
     <>
-      Hello
+      <h1 className="title">
+        Hello world!
+      </h1>
     </>
   )
 }
