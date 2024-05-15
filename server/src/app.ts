@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import "express-async-errors";
 import jwt from "jwt-simple";
 
@@ -84,18 +84,20 @@ app.use("/api", (req, res, next) => {
 //get all subject containing partial string that's in 'name' query, if query is empty get all subjects.
 app.get("/api/subjects", async (req, res) => {
   const name = req.query.name as string;
+  const where: Prisma.SubjectWhereInput = {};
+
   if (name) {
-    const subjects = await db.subject.findMany({
-      where: {
-        name: { contains: name },
-      },
-    });
-    console.log("name", name);
-    res.json(subjects);
-  } else {
-    const allSubjects = await db.subject.findMany();
-    res.json(allSubjects);
+    where.name = { contains: name };
   }
+
+  const subjects = await db.subject.findMany({
+    where,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  res.json(subjects);
 });
 
 //SUBJECT PAGE
@@ -104,41 +106,53 @@ app.get("/api/subjects", async (req, res) => {
 app.get("/api/subjects/:subjectId", async (req, res) => {
   const { subjectId } = req.params;
 
-  try {
-    await db.subject.findUnique({
-      where: {
-        id: subjectId,
-      },
-      include: {
-        Question: true,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-//EXAM PAGE
-
-//create a new exam
-app.post("/api/create-exam", async (req, res) => {
-  const { subjectId, userId } = req.body;
-  const questions = await db.question.findMany({
+  const subject = await db.subject.findUnique({
     where: {
-      subjectId: subjectId,
+      id: subjectId,
+    },
+    include: {
+      _count: {
+        select: {
+          Questions: true,
+        },
+      },
+      Subjects: {
+          include: {
+            _count: {
+              select: {
+                Questions: true,
+              },
+            },
+            Subjects: {
+              include: {
+                _count: {
+                  select: {
+                    Questions: true,
+                  },
+                },
+                Subjects: true
+              }
+            }
+            
+          }
+      },
     },
   });
+
+  res.status(200).json(subject);
+});
+
+// EXAM PAGE
+
+// Create a new exam
+app.post("/api/create-exam", async (req, res) => {
+  const { subjectId, userId } = req.body;
   const createdExam = await db.exam.create({
     data: {
       subjectId: subjectId,
       userId: userId,
-      questions: {
-        connect: questions.map((question) => ({ id: question.id })),
-      },
     },
-    include: {
-      questions: true,
-    },
+    include: {},
   });
   res.json(createdExam);
 });
@@ -153,7 +167,7 @@ app.get("/api/subjects/:subjectId/random", async (req, res) => {
         id: subjectId,
       },
       include: {
-        Question: true,
+        Questions: true,
       },
     });
 
@@ -161,7 +175,7 @@ app.get("/api/subjects/:subjectId/random", async (req, res) => {
       return res.status(404).json({ error: "Subject not found" });
     }
 
-    const questions = subject.Question;
+    const questions = subject.Questions;
     if (!questions || questions.length === 0) {
       return res
         .status(404)
@@ -189,3 +203,13 @@ const port = process.env.SERVER_PORT;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+//@ts-ignore
+function buildRecursiveInclude(depth: number) {
+  if (depth === 0) return {};
+  return {
+    include: {
+      Subjects: buildRecursiveInclude(depth - 1),
+    },
+  };
+}

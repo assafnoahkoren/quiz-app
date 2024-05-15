@@ -18,7 +18,7 @@ model User {
   email    String  @unique
   name     String?
   password String
-  Exam     Exam[]
+  Exams     Exam[]
 }
 
 model Subject {
@@ -26,29 +26,40 @@ model Subject {
   name        String
   description String?
   parentId    String?
+  createdAt   DateTime   @default(now())
   Parent      Subject?   @relation("subjectParent", fields: [parentId], references: [id])
   Subjects    Subject[]  @relation("subjectParent")
-  Question    Question[]
-  Exam        Exam[]
+  Questions   Question[]
+  Exams       Exam[]
 }
 
 model Question {
-  id            String   @id @default(cuid())
+  id            String         @id @default(cuid())
   subjectId     String
-  Subject       Subject  @relation(fields: [subjectId], references: [id])
+  Subject       Subject        @relation(fields: [subjectId], references: [id])
   text          String
   correctAnswer String
   otherAnswers  String[]
-  Exam          Exam?    @relation(fields: [examId], references: [id])
   examId        String?
+  ExamQuestions  ExamQuestion[]
 }
 
 model Exam {
-  id        String  @id @default(cuid())
-  subjectId String
-  Subject   Subject @relation(fields: [subjectId], references: [id])
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
-  questions Question[]
-  answers   String[]
+  id           String         @id @default(cuid())
+  subjectId    String
+  Subject      Subject        @relation(fields: [subjectId], references: [id])
+  userId       String
+  User         User           @relation(fields: [userId], references: [id])
+  ExamQuestion ExamQuestion[]
+  createdAt  DateTime @default(now())
+}
+
+model ExamQuestion {
+  id         String   @id @default(cuid())
+  questionId String
+  Question   Question @relation(fields: [questionId], references: [id])
+  examId     String
+  Exam       Exam     @relation(fields: [examId], references: [id])
+  answer     String
+  createdAt  DateTime @default(now())
 }
