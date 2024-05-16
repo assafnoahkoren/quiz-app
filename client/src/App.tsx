@@ -1,23 +1,21 @@
-import { observer } from "mobx-react-lite"
-import { authStore } from "./stores/AuthStore"
+import { observer } from "mobx-react-lite";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import HomePage from "./pages/Homepage";
 
 const App = observer(() => {
-  
   return (
-    <>
-      <h1 className="title">
-        Hello world!
-      </h1>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/register" element={<Register />}/>
+        <Route path="/home" element={<HomePage />}/>
+        <Route path="*" element={<HomePage />}/>
+      </Routes>
+    </Router>
+  );
+});
 
-      <button className="bg-slate-200 border-2 border-slate-300 px-4 rounded" onClick={() => authStore.login('a@a.com', '123123')}>
-        Click me!
-      </button>
-
-      {authStore.jwt}
-      {authStore.isLogged ? 'Logged in' : 'Not logged in'}
-
-    </>
-  )
-})
-
-export default App
+export default App;

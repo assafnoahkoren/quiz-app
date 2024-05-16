@@ -20,22 +20,27 @@ app.get("/api", (req, res) => {
 
 // Create a new user in the users table
 app.post("/auth/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
   const user = await db.user.create({
     data: {
       email: email,
       password: password,
+      name: name,
     },
     select: {
       id: true,
       email: true,
       password: true,
+      name: true,
     },
   });
 
-  res.json(user);
-});
+  const token = jwt.encode(user, process.env.JWT_SECRET!);
+  res.json({
+    token: token,
+    user: user,
+  });});
 
 // Flow:
 // 1. Gets email and password

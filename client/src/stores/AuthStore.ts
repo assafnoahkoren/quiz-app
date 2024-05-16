@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 // This store will manage the authentication state of the user
 class AuthStore {
@@ -22,14 +22,25 @@ class AuthStore {
     });
     const data = await res.json();
     runInAction(() => {
+      if (data.user) {
         this.jwt = data.token;
         this.isLogged = true;
+      }
+      console.log(data);
+      console.log("is logged: ", this.isLogged);
     });
-    
   }
 
-  register(email: string, password: string) {
-    fetch("http://localhost:3000/auth/register", {
+  logout() {
+    runInAction(() => {
+      this.jwt = "";
+      this.isLogged = false;
+      console.log("is logged: ", this.isLogged);
+    });
+  }
+
+  async register(email: string, password: string, name: string) {
+    const res = await fetch("http://localhost:3000/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +48,17 @@ class AuthStore {
       body: JSON.stringify({
         email: email,
         password: password,
+        name: name,
       }),
+    });
+    const data = await res.json();
+    runInAction(() => {
+      if (data.user) {
+        this.jwt = data.token;
+        this.isLogged = true;
+      }
+      console.log(data);
+      console.log("is logged: ", this.isLogged);
     });
   }
 
@@ -45,11 +66,6 @@ class AuthStore {
     this.jwt = undefined;
     this.isLogged = false;
   }
-
-
 }
 
 export const authStore = new AuthStore();
-
-//@ts-ignore
-window.authStore = authStore;
