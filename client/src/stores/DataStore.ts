@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { authStore } from "./AuthStore";
+import axios from "axios";
 class DataStore {
   subjects = [];
   subjectsLoading = false;
@@ -10,14 +10,10 @@ class DataStore {
 
   async getSubjects() {
     this.subjectsLoading = true;
-    const res = await fetch("http://localhost:3000/api/subjects", {
-      headers: {
-        authorization: authStore.jwt || "",
-      },
-    });
+
+    const res = await axios.get("/api/subjects");
     this.subjectsLoading = false;
-    const data = await res.json();
-    this.subjects = data;
+    this.subjects = res.data;
 
   }
 }
