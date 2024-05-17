@@ -1,11 +1,10 @@
-import { observer } from "mobx-react-lite";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HomePage from "./pages/Homepage";
 
-const App = observer(() => {
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -16,6 +15,6 @@ const App = observer(() => {
       </Routes>
     </Router>
   );
-});
+};
 
 export default App;

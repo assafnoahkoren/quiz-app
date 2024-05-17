@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 
 // This store will manage the authentication state of the user
 class AuthStore {
@@ -7,6 +8,7 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
+    makePersistable(this, { name: 'AuthStore', properties: ['jwt','isLogged'], storage: window.localStorage });
   }
 
   async login(email: string, password: string) {
