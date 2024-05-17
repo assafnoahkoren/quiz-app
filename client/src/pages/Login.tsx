@@ -1,44 +1,45 @@
 import { observer } from "mobx-react-lite";
 import { authStore } from "../stores/AuthStore";
 import { useState } from "react";
+import Input from "../components/UIElements/Input";
+import Button from "../components/UIElements/Button";
+import { Link, useNavigate } from "react-router-dom";
+import Card from "../components/UIElements/Card";
 
 const Login = observer(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const authUser = async () => {
-    await authStore.login(email, password);
-  };
-
-  const handleLogout = () => {
-    authStore.logout();
+    try {
+      await authStore.login(email, password);
+      navigate("/homepage");
+    } catch {
+      alert("incorrect info");
+    }
   };
 
   return (
-    <div>
+    <Card>
       <h1>Login</h1>
-      <input
+      <Input
+        label="Email"
+        placeholder="Enter email..."
         type="text"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={setEmail}
       />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+      <Input
+        label="Password"
+        placeholder="Enter password..."
+        type="text"
+        onChange={setPassword}
       />
-      <h2>
-        <div>
-          {authStore.isLogged ? (
-            <button onClick={handleLogout}>Logout</button>
-          ) : (
-            <button onClick={authUser}>Login</button>
-          )}
-        </div>
-      </h2>
-    </div>
+      <Button onClick={authUser}>Login</Button>
+      <h4>
+        don't have an account? <Link to="/register">register</Link>
+      </h4>
+    </Card>
   );
 });
 

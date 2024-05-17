@@ -13,7 +13,10 @@ class DataStore {
 
     const res = await axios.get("/api/subjects");
     this.subjectsLoading = false;
-    this.subjects = res.data;
+    console.log(res.data.error)
+    if (!res.data.error) {
+      this.subjects = res.data;
+    }
 
   }
 }
