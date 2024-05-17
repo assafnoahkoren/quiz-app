@@ -4,11 +4,11 @@ import bodyParser from "body-parser";
 import { Prisma, PrismaClient } from "@prisma/client";
 import "express-async-errors";
 import jwt from "jwt-simple";
-import cors from 'cors';
+import cors from "cors";
 
 const db = new PrismaClient();
 const app = express();
-app.use(cors())
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -20,21 +20,27 @@ app.get("/api", (req, res) => {
 
 // Create a new user in the users table
 app.post("/auth/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
   const user = await db.user.create({
     data: {
       email: email,
       password: password,
+      name: name,
     },
     select: {
       id: true,
       email: true,
       password: true,
+      name: true,
     },
   });
 
-  res.json(user);
+  const token = jwt.encode(user, process.env.JWT_SECRET!);
+  res.json({
+    token: token,
+    user: user,
+  });
 });
 
 // Flow:
@@ -53,11 +59,15 @@ app.post("/auth/login", async (req, res) => {
       email: true,
     },
   });
-  const token = jwt.encode(user, process.env.JWT_SECRET!);
-  res.json({
-    token: token,
-    user: user,
-  });
+  if (user) {
+    const token = jwt.encode(user, process.env.JWT_SECRET!);
+    res.json({
+      token: token,
+      user: user,
+    });
+  } else {
+    res.status(401).json({ error: "Invalid email or password" });
+  }
 });
 
 app.use("/api", (req, res, next) => {
@@ -119,24 +129,23 @@ app.get("/api/subjects/:subjectId", async (req, res) => {
         },
       },
       Subjects: {
-          include: {
-            _count: {
-              select: {
-                Questions: true,
-              },
+        include: {
+          _count: {
+            select: {
+              Questions: true,
             },
-            Subjects: {
-              include: {
-                _count: {
-                  select: {
-                    Questions: true,
-                  },
+          },
+          Subjects: {
+            include: {
+              _count: {
+                select: {
+                  Questions: true,
                 },
-                Subjects: true
-              }
-            }
-            
-          }
+              },
+              Subjects: true,
+            },
+          },
+        },
       },
     },
   });
