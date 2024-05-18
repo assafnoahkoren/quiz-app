@@ -9,7 +9,7 @@ const SubjectPage = observer(() => {
 
   useEffect(() => {
     const fetchSubject = async () => {
-      const data = await dataStore.getSubjectById(subjectId);
+      const data = await dataStore.getSubjectById(dataStore.selectedSubjectId);
       setSelectedSubject(data);
     };
     fetchSubject();

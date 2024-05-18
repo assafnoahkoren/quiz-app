@@ -1,37 +1,17 @@
-$bg-color: #f5f5f5;
-
-.label {
-  min-width: 100px;
-  font-size: 16px;
-  padding: 10px;
-  font-weight: 600;
-}
-
-.input-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  min-width: max-content;
-}
-
-.label {
-  font-size: 16px;
-  font-weight: 600;
-}
-
 .input {
+  height: var(--height-button);
+  width: 250px;
+  margin-bottom: 20px;
   color: black;
-  background-color: $bg-color;
-  border-radius: 15px;
-  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: var(--border-radius-button);
+  padding: 0 10px;
   font-size: 16px;
-  border: none;
+  border: 2px solid rgb(230, 230, 230);
   outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease-in-out;
 
   &:focus {
-    background-color: lighten($bg-color, 10%);
+    background-color: lighten(#f5f5f5, 10%);
   }
-  
 }

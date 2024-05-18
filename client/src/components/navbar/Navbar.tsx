@@ -8,17 +8,17 @@ const Navbar = observer(() => {
   const handleLogout = () => {
     authStore.logout();
   };
+  const navbarClass = authStore.isLogged ? 'navbar logged' : 'navbar';
   return (
-    <div className="navbar">
-      {authStore.isLogged ? (
-        <Link to="/">
-          <Button onClick={handleLogout}>Logout</Button>
-        </Link>
-      ) : (
+    <div className={navbarClass}>
+      {authStore.isLogged && (
         <Link to="/login">
-          <Button>Login</Button>
+          <Button inverse onClick={handleLogout}>התנתק</Button>
         </Link>
       )}
+      <div className="navbar-logo">
+        קוויז
+      </div>
     </div>
   );
 });

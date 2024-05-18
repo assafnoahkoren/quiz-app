@@ -1,9 +1,12 @@
 :root {
-    --navbar-height: 4em;
+    --navbar-height: 3.5em;
+    --main-blue: #2578F4;
+    --border-radius-button: 10px;
+    --height-button: 40px;
 }
 
 .main-container {
-    background-color: rgb(226, 226, 226);
+    background-color: rgb(255, 255, 255);
     display: flex;
     align-items: baseline;
     justify-content: center;

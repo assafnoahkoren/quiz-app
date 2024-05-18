@@ -41,7 +41,7 @@ const HomePage = observer(() => {
 
       {!authStore.isLogged && (
         <h3>
-          Please <Link to="/login">login</Link> to continue
+          כדי להמשיך <Link to="/login">התחברו</Link> 
         </h3>
       )}
     </div>

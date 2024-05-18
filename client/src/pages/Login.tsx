@@ -1,14 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { authStore } from "../stores/AuthStore";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Input from "../components/UIElements/Input";
 import Button from "../components/UIElements/Button";
 import { Link, useNavigate } from "react-router-dom";
-import Card from "../components/UIElements/Card";
 
 const Login = observer(() => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
@@ -16,7 +13,10 @@ const Login = observer(() => {
   const authUser = async () => {
     try {
       console.log(emailRef.current!.value, passwordRef.current!.value);
-      await authStore.login(emailRef.current!.value, passwordRef.current!.value);
+      await authStore.login(
+        emailRef.current!.value,
+        passwordRef.current!.value
+      );
       navigate("/homepage");
     } catch {
       alert("incorrect info");
@@ -24,25 +24,25 @@ const Login = observer(() => {
   };
 
   return (
-    <Card>
-      <h1>Login</h1>
-      <Input
-        label="Email"
-        placeholder="Enter email..."
-        type="text"
-        ref={emailRef}
-      />
-      <Input
-        label="Password"
-        placeholder="Enter password..."
-        type="text"
-        ref={passwordRef}
-      />
-      <Button onClick={authUser}>Login</Button>
-      <h4>
-        don't have an account? <Link to="/register">register</Link>
-      </h4>
-    </Card>
+    <div className="page-container">
+      <div className="page-wraper">
+        <br></br>
+        <div className="page-header_container">
+          <div className="page-header_headline">ברוכים הבאים 👋 </div>
+          <div className="page-header_subheadline">התחברו לחשבון שלכם</div>
+        </div>
+        <br></br>
+        <Input placeholder="אימייל" type="text" ref={emailRef} />
+        <Input placeholder="סיסמא" type="text" ref={passwordRef} />
+        <Button onClick={authUser}>התחבר</Button>
+        <br></br>
+        <div style={{ opacity: 0.2 }}>----------------------------או----------------------------</div>
+        <br></br>
+        <Link to="/register">
+          <Button inverse>הרשם</Button>
+        </Link>
+      </div>
+    </div>
   );
 });
 

@@ -1,53 +1,54 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { authStore } from "../stores/AuthStore";
 import Button from "../components/UIElements/Button";
 import Input from "../components/UIElements/Input";
 import { Link, useNavigate } from "react-router-dom";
-import Card from "../components/UIElements/Card";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
   const navigate = useNavigate();
 
   const registerUser = async () => {
-    if (name && email && password) {
-      await authStore.register(email, password, name);
-      navigate('/homepage');
+    if (
+      emailRef.current!.value &&
+      passwordRef.current!.value &&
+      nameRef.current!.value
+    ) {
+      await authStore.register(
+        emailRef.current!.value,
+        passwordRef.current!.value,
+        nameRef.current!.value
+      );
+      navigate("/homepage");
     } else {
       alert("enter required inputs");
     }
   };
   return (
-    <Card>
-      <h1>Register</h1>
-      <Input
-        label="Name"
-        type="text"
-        placeholder="Enter name..."
-        value={name}
-        onChange={setName}
-      />
-      <Input
-        label="Email"
-        type="text"
-        placeholder="Enter email..."
-        value={email}
-        onChange={setEmail}
-      />
-      <Input
-        label="Password"
-        type="password"
-        placeholder="Enter password..."
-        value={password}
-        onChange={setPassword}
-      />
-      <Button onClick={registerUser}>Register</Button>
-      <h4>
-        already have an account? <Link to="/login">login</Link>
-      </h4>
-    </Card>
+    <div className="page-container">
+      <div className="page-wraper">
+        <br></br>
+        <div className="page-header_container">
+          <div className="page-header_headline">ברוכים הבאים 👋 </div>
+          <div className="page-header_subheadline">יצירת חשבון חדש</div>
+        </div>
+        <br></br>
+        <Input type="text" placeholder="שם מלא" ref={nameRef} />
+        <Input type="text" placeholder="אימייל" ref={emailRef} />
+        <Input type="password" placeholder="סיסמא" ref={passwordRef} />
+        <Button onClick={registerUser}>הרשם</Button>
+        <br></br>
+        <div style={{ opacity: 0.2 }}>----------------------------או----------------------------</div>
+        <br></br>
+
+        <Link to="/login">
+          <Button inverse>התחבר</Button>
+        </Link>
+      </div>
+    </div>
   );
 };
 
