@@ -2,16 +2,22 @@ import { useState } from "react";
 import { authStore } from "../stores/AuthStore";
 import Button from "../components/UIElements/Button";
 import Input from "../components/UIElements/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "../components/UIElements/Card";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const registerUser = async () => {
-    await authStore.register(email, password, name);
+    if (name && email && password) {
+      await authStore.register(email, password, name);
+      navigate('/homepage');
+    } else {
+      alert("enter required inputs");
+    }
   };
   return (
     <Card>
