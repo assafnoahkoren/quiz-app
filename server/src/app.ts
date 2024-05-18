@@ -5,12 +5,15 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import "express-async-errors";
 import jwt from "jwt-simple";
 import cors from "cors";
+import { v1 } from "./rotuers/v1.router";
 
 const db = new PrismaClient();
 const app = express();
 app.use(cors());
 
 app.use(bodyParser.json());
+
+app.use('/api/v1', v1)
 
 app.get("/api", (req, res) => {
   res.json({

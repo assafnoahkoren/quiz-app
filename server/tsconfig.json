@@ -12,6 +12,8 @@
 
     /* Type Checking */
     "strict": true,                                      /* Enable all strict type-checking options. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
+    "typeRoots": ["./custom.d.ts"],                      /* Specify the location for type definition files. */
+    "types": [],                                         /* Specify type packages to be included without being referenced in a source file. */
   }
 }
