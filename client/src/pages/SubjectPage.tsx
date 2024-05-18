@@ -1,13 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { dataStore } from "../stores/DataStore";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SubjectOption from "../components/UIElements/SubjectOption";
 import { subjectType } from "../types/subjectType";
 
 const SubjectPage = observer(() => {
   const [selectedSubject, setSelectedSubject] = useState();
-  const subjectId = useParams().subjectId;
 
   useEffect(() => {
     const fetchSubject = async () => {
