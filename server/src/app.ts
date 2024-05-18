@@ -7,6 +7,14 @@ import jwt from "jwt-simple";
 import cors from "cors";
 import { v1 } from "./rotuers/v1.router";
 
+declare global {
+  namespace Express {
+    interface Request {
+      currentUserId?: string
+    }
+  }
+}
+
 const db = new PrismaClient();
 const app = express();
 app.use(cors());
@@ -73,26 +81,6 @@ app.post("/auth/login", async (req, res) => {
   }
 });
 
-app.use("/api", (req, res, next) => {
-  const token = req.headers.authorization;
-  console.log("token", token);
-
-  let payload;
-  try {
-    payload = jwt.decode(token!, process.env.JWT_SECRET!);
-  } catch (error) {
-    res.json({ error });
-    return;
-  }
-  console.log("payload", payload);
-
-  if (!payload) {
-    res.json({ error: "No valid token" });
-    return;
-  }
-
-  next();
-});
 
 //HOME PAGE
 
