@@ -3,6 +3,7 @@ import axios from "axios";
 class DataStore {
   subjects = [];
   subjectsLoading = false;
+  selectedSubjectId = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -13,10 +14,13 @@ class DataStore {
 
     const res = await axios.get("/api/subjects");
     this.subjectsLoading = false;
-    console.log(res.data.error);
     if (!res.data.error) {
       this.subjects = res.data;
     }
+  }
+
+  setSelectedSubject(subjectId: string) {
+    this.selectedSubjectId = subjectId;
   }
 
   async getSubjectById(subjectId: string) {
@@ -24,7 +28,6 @@ class DataStore {
 
     const res = await axios.get(`/api/subjects/${subjectId}`);
     this.subjectsLoading = false;
-    console.log("dataaaaaa: ",res.data);
     if (res.data) {
       return res.data;
     }

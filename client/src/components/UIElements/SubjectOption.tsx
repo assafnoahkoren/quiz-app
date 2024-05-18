@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import "./SubjectOption.scss";
 
 interface SubjectOptionProps {

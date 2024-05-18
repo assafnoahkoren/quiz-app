@@ -6,6 +6,7 @@ import HomePage from "./pages/Homepage";
 import Navbar from "./components/navbar/Navbar";
 
 import './App.scss';
+import SubjectPage from "./pages/SubjectPage";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path='/subjectPage/:subjectId' element={<SubjectPage/>}/>
           <Route path="*" element={<HomePage />} />
         </Routes>
       </div>
