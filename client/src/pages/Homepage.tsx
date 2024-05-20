@@ -35,6 +35,7 @@ const HomePage = observer(() => {
                   <SubjectCard
                     isNew
                     onClick={() => subjectClicked(subject.id)}
+                    id={subject.id}
                     key={subject.id}
                     name={subject.name}
                   />

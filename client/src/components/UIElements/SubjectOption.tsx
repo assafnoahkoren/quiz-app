@@ -29,12 +29,13 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
               <div className="subject-option_subjcount">
                 {subjects.length} תתי נושאים{" "}
               </div>
-              <div className="subject-option_expand">/\</div>
+              {isHidden ? <div className="subject-option_expand">/\</div> :
+              <div className="subject-option_expand">\/</div>}
             </div>
           </div>
           {subjects.map((curSubject) => {
             return (
-              <div
+              <div key={curSubject.id}
                 className={`subject-option_container ${
                   isHidden ? "hidden" : ""
                 }`}

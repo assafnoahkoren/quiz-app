@@ -7,8 +7,11 @@ import Navbar from "./components/navbar/Navbar";
 
 import './App.scss';
 import SubjectPage from "./pages/SubjectPage";
+import useGlobalColor from "./hooks/useGlobalColor";
 
 const App = () => {
+
+  useGlobalColor();
   return (
     <Router>
       <Navbar />

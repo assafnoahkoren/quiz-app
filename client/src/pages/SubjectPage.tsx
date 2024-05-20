@@ -2,29 +2,31 @@ import { observer } from "mobx-react-lite";
 import { dataStore } from "../stores/DataStore";
 import { useEffect, useRef, useState } from "react";
 import SubjectOption from "../components/UIElements/SubjectOption";
-
-import "./SubjectPage.scss";
 import Button from "../components/UIElements/Button";
 import { Link } from "react-router-dom";
 import Loading from "../components/UIElements/Loading";
 
+import "./SubjectPage.scss";
+
 const SubjectPage = observer(() => {
   const [selectedSubject, setSelectedSubject] = useState();
   const backgroundColor = useRef<string | null>(null);
+  const subjectId = localStorage.getItem('selectedSubjectId');
 
   useEffect(() => {
     const fetchSubject = async () => {
-      await dataStore.getSubjectById(dataStore.selectedSubjectId);
-      setSelectedSubject(
-        dataStore.subjectsMap[dataStore.selectedSubjectId].subject
-      );
-      backgroundColor.current = selectedSubject ? localStorage.getItem(selectedSubject.name): null;
+      await dataStore.getSubjectById(subjectId);
+      setSelectedSubject(dataStore.subjectsMap.get(subjectId)?.subject);
+      backgroundColor.current = selectedSubject
+        ? localStorage.getItem(selectedSubject.name)
+        : null;
     };
     fetchSubject();
   }, []);
 
-  return (
-    dataStore.subjectsMap[dataStore.selectedSubjectId].isLoading ? <Loading></Loading> :
+  return dataStore.subjectsMap.get(subjectId)?.isLoading ? (
+    <Loading></Loading>
+  ) : (
     <div className="page-wraper">
       <div className="subject-page_header">
         <div className="subject-page_header-top">

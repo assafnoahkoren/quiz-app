@@ -4,8 +4,7 @@ class DataStore {
   subjects = [];
   subjectsLoading = false;
   selectedSubjectId = "";
-  subjectsMap: { [subjectId: string]: { isLoading: boolean; subject: any } } =
-{};
+  subjectsMap: Map<string, { isLoading: boolean; subject: any }> = new Map();
 
   constructor() {
     makeAutoObservable(this);
@@ -23,19 +22,28 @@ class DataStore {
 
   setSelectedSubject(subjectId: string) {
     this.selectedSubjectId = subjectId;
-    if (!this.subjectsMap[subjectId]) {
-      this.subjectsMap[subjectId] = { isLoading: false, subject: null };
-    }
+    localStorage.setItem('selectedSubjectId', subjectId);
   }
 
   async getSubjectById(subjectId: string) {
-    if (!this.subjectsMap[subjectId].subject) {
-      this.subjectsMap[subjectId].isLoading = true;
+    let subjectData = this.subjectsMap.get(subjectId);
+
+    if (!subjectData) {
+      subjectData = { isLoading: false, subject: null };
+      this.subjectsMap.set(subjectId, subjectData);
+    }
+
+    if (!subjectData.subject) {
+      subjectData.isLoading = true;
+
       const res = await axios.get(`/api/subjects/${subjectId}`);
-      if (res.data) {
-        this.subjectsMap[subjectId].subject = res.data;
+      const data: any = res.data;
+
+      if (data) {
+        subjectData.subject = data;
       }
-      this.subjectsMap[subjectId].isLoading = false;
+
+      subjectData.isLoading = false;
     }
   }
 }
