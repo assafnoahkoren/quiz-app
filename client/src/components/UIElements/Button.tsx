@@ -4,14 +4,13 @@ type buttonProps = {
   onClick?: () => void;
   children: string;
   inverse?: boolean;
+  bold?: boolean;
 };
 
 const Button = (props: buttonProps) => {
 
-  const buttonClass = props.inverse ? 'button-inverse' : 'button';
-
   return (
-    <button className={buttonClass} onClick={props.onClick}>
+    <button className={`button ${props.inverse && 'inverse'} ${props.bold && 'bold'}`} onClick={props.onClick}>
       {props.children}
     </button>
   );
