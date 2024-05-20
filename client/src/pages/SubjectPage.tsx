@@ -1,57 +1,66 @@
 import { observer } from "mobx-react-lite";
 import { dataStore } from "../stores/DataStore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SubjectOption from "../components/UIElements/SubjectOption";
-import { subjectType } from "../types/subjectType";
+
+import "./SubjectPage.scss";
+import Button from "../components/UIElements/Button";
+import { Link } from "react-router-dom";
+import Loading from "../components/UIElements/Loading";
 
 const SubjectPage = observer(() => {
   const [selectedSubject, setSelectedSubject] = useState();
+  const backgroundColor = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchSubject = async () => {
-      const data = await dataStore.getSubjectById(dataStore.selectedSubjectId);
-      setSelectedSubject(data);
+      await dataStore.getSubjectById(dataStore.selectedSubjectId);
+      setSelectedSubject(
+        dataStore.subjectsMap[dataStore.selectedSubjectId].subject
+      );
+      backgroundColor.current = selectedSubject ? localStorage.getItem(selectedSubject.name): null;
     };
     fetchSubject();
   }, []);
 
-  const recursiveSubjects2 = (curSubject: subjectType): React.ReactNode[] => {
-    let subjectNodes: React.ReactNode[] = [];
-    if (curSubject.Subjects) {
-      curSubject.Subjects.forEach((subject: subjectType) => {
-        const subjectNode = (
-          <SubjectOption
-            key={subject.id}
-            description={subject.description}
-            name={subject.name}
-          />
-        );
-        subjectNodes.push(subjectNode);
-        subjectNodes = subjectNodes.concat(recursiveSubjects(subject));
-      });
-    }
-    return subjectNodes;
-  };
-
-  const getRecursiveSubject = (curSubject: subjectType) => {
-    return (
-      <li key={curSubject.id} style={{ listStyle: 'none' }}>
-        <SubjectOption
-          description={curSubject.description}
-          name={curSubject.name}
-        />
-        {curSubject.Subjects && (
-          <ul style={{ listStyle: 'none' }}>
-            {curSubject.Subjects.map((subject: subjectType) =>
-              getRecursiveSubject(subject)
-            )}
-          </ul>
-        )}
-      </li>
-    );
-  };
-
-  return <div style={{textAlign: 'end', direction: 'rtl'}}>{selectedSubject && getRecursiveSubject(selectedSubject)}</div>;
+  return (
+    dataStore.subjectsMap[dataStore.selectedSubjectId].isLoading ? <Loading></Loading> :
+    <div className="page-wraper">
+      <div className="subject-page_header">
+        <div className="subject-page_header-top">
+          <h3 className="main-subject-title">
+            {selectedSubject && selectedSubject.name}
+          </h3>
+          <Link to="/homepage">
+            <div className="back-to-main-button">חזרה לראשי</div>
+          </Link>
+        </div>
+        <Button inverse bold>
+          התחל קוויז כללי
+        </Button>
+        {/* what should i do if i have similar rules on different elements? */}
+        <div className="back-to-main-button">או בחר נושא למטה</div>
+        {/* what should i do if i have single rule? */}
+        <div className="subjects-tree-title">עץ נושאים</div>
+      </div>
+      <div className="sub-subjects-container">
+        {selectedSubject &&
+          selectedSubject.Subjects.map((subject) => {
+            if (subject.Subjects.length > 0) {
+              return (
+                <SubjectOption
+                  key={subject.id}
+                  name={subject.name}
+                  subjects={subject.Subjects}
+                />
+              );
+            } else {
+              return <SubjectOption key={subject.id} name={subject.name} />;
+            }
+          })}
+      </div>
+    </div>
+  );
 });
 
 export default SubjectPage;
