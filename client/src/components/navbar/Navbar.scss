@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    height: var(--navbar-height);
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid rgba(0, 0, 0, 0.048);
+}
+
+.logged {
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+
+}
+
+.navbar-logo {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--main-blue);
+    user-select: none;
+    transition: all 0.3s ease; // Add this line
+}
+
+.navbar.logged .navbar-logo{
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--main-blue);
+    user-select: none;
+    margin: 0 15px;
+}

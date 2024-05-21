@@ -1,22 +1,53 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { authStore } from "../stores/AuthStore";
+import Button from "../components/UIElements/Button";
+import Input from "../components/UIElements/Input";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
-    const registerUser = async () => {
-        await authStore.register(email, password, name);
-    };
-    return (
-    <div>
-        <h1>Register</h1>
-        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
-        <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-        <button onClick={registerUser}>Register</button>
+  const navigate = useNavigate();
+
+  const registerUser = async () => {
+    if (
+      emailRef.current!.value &&
+      passwordRef.current!.value &&
+      nameRef.current!.value
+    ) {
+      await authStore.register(
+        emailRef.current!.value,
+        passwordRef.current!.value,
+        nameRef.current!.value
+      );
+      navigate("/homepage");
+    } else {
+      alert("enter required inputs");
+    }
+  };
+  return (
+    <div className="page-container">
+      <div className="page-wraper">
+        <br></br>
+        <div className="page-header_container">
+          <div className="page-header_headline">ברוכים הבאים 👋 </div>
+          <div className="page-header_subheadline">יצירת חשבון חדש</div>
+        </div>
+        <br></br>
+        <Input type="text" placeholder="שם מלא" ref={nameRef} />
+        <Input type="text" placeholder="אימייל" ref={emailRef} />
+        <Input type="password" placeholder="סיסמא" ref={passwordRef} />
+        <Button onClick={registerUser}>הרשם</Button>
+        <br></br>
+        <div style={{ opacity: 0.2 }}>----------------------------או----------------------------</div>
+        <br></br>
+
+        <Link to="/login">
+          <Button inverse>התחבר</Button>
+        </Link>
+      </div>
     </div>
   );
 };

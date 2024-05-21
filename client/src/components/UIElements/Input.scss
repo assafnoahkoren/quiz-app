@@ -1,0 +1,17 @@
+.input {
+  height: var(--height-button);
+  width: 250px;
+  margin-bottom: 20px;
+  color: black;
+  background-color: #f5f5f5;
+  border-radius: var(--border-radius-button);
+  padding: 0 10px;
+  font-size: 16px;
+  border: 2px solid rgb(230, 230, 230);
+  outline: none;
+  transition: background-color 0.3s ease-in-out;
+
+  &:focus {
+    background-color: lighten(#f5f5f5, 10%);
+  }
+}

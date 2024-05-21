@@ -3,16 +3,24 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HomePage from "./pages/Homepage";
+import Navbar from "./components/navbar/Navbar";
+
+import './App.scss';
+import SubjectPage from "./pages/SubjectPage";
 
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login />}/>
-        <Route path="/register" element={<Register />}/>
-        <Route path="/home" element={<HomePage />}/>
-        <Route path="*" element={<HomePage />}/>
-      </Routes>
+      <Navbar />
+      <div className="main-container">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path='/subjectPage/:subjectId' element={<SubjectPage/>}/>
+          <Route path="*" element={<HomePage />} />
+        </Routes>
+      </div>
     </Router>
   );
 };

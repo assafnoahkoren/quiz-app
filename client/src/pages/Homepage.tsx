@@ -1,24 +1,50 @@
 import { useEffect } from "react";
 import { dataStore } from "../stores/DataStore";
 import { observer } from "mobx-react-lite";
+import { authStore } from "../stores/AuthStore";
+import { useNavigate } from "react-router-dom";
+import SubjectCard from "../components/UIElements/SubjectCard";
+import { subjectType } from "../types/subjectType";
+import Loading from "../components/UIElements/Loading";
+
+import "./Homepage.scss";
 
 const HomePage = observer(() => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     dataStore.getSubjects();
   }, []);
 
+  const subjectClicked = (subjectId: string) => {
+    dataStore.setSelectedSubject(subjectId);
+    navigate(`/subjectPage/${subjectId}`);
+  };
+
   return (
-    <div>
-      <h1>Home Page</h1>
-      <div>
-        {dataStore.subjects.map((subject: any) => (
-          <div key={subject.id}>
-            <h2>{subject.name}</h2>
-            <p>{subject.description}</p>
+    dataStore.subjectsLoading ? 
+      <Loading /> :
+      <div className="page-container">
+        {authStore.isLogged && (
+          <div className="page-wraper">
+            <h3>מבחנים חדשים</h3>
+            <div className="main-subjects-container">
+              {dataStore.subjects
+                .filter((subject: subjectType) => subject.parentId === null)
+                .map((subject: subjectType) => (
+                  <SubjectCard
+                    isNew
+                    onClick={() => subjectClicked(subject.id)}
+                    key={subject.id}
+                    name={subject.name}
+                  />
+                ))}
+            </div>
+            <h3>מבחנים שלי</h3>
+            <div style={{ opacity: 0.2 }}>עדיין לא נבחרו מבחנים לתרגול...</div>
           </div>
-        ))}
+        )}
       </div>
-    </div>
   );
 });
 

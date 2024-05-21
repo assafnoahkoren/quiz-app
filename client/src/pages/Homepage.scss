@@ -1,0 +1,31 @@
+.page-container {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-wraper {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+}
+
+.page-header_container {
+    padding-right: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    align-self: baseline;
+}
+
+.page-header_headline {
+    font-weight: 800;
+}
+
+.main-subjects-container {
+    display: flex;
+    grid-template-columns: 1fr  1fr;
+}

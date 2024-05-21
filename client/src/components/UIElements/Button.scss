@@ -1,0 +1,23 @@
+.button {
+    min-width: 180px;
+    font-weight: 600;
+    height: var(--height-button);
+    padding: 5px;
+    margin: 5px;
+    outline: none;
+    border: none;
+    border-radius: var(--border-radius-button);
+    color: white;
+    background-color: var(--main-blue);
+    cursor: pointer;
+}
+
+.button.inverse {
+    color: var(--main-blue);
+    background-color: white;
+    border: 2px solid var(--main-blue);
+}
+
+.button.bold {
+    font-weight: 800;
+}
