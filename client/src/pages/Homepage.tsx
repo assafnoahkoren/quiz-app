@@ -29,7 +29,7 @@ const HomePage = observer(() => {
       <Loading /> :
       <div className="page-container">
         {authStore.isLogged && (
-          <div className="page-wraper">
+          <div className="page-wrapper">
             <h3>מבחנים חדשים</h3>
             <div className="main-subjects-container">
               {dataStore.subjectsToShow

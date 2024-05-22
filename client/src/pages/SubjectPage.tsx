@@ -10,7 +10,7 @@ import "./SubjectPage.scss";
 import Search from "../components/UIElements/Search";
 
 const SubjectPage = observer(() => {
-  const subjectId = localStorage.getItem('selectedSubjectId');
+  const subjectId = localStorage.getItem("selectedSubjectId");
 
   useEffect(() => {
     const fetchSubject = async () => {
@@ -22,19 +22,22 @@ const SubjectPage = observer(() => {
   return dataStore.subjectsMap.get(subjectId)?.isLoading ? (
     <Loading></Loading>
   ) : (
-    <div className="page-wraper">
+    <div className="page-wrapper">
       <div className="subject-page_header">
         <div className="subject-page_header-top">
-          <h3 className="main-subject-title">
-            {dataStore.selectedSubjectFiltered.name && dataStore.selectedSubjectFiltered.name}
-          </h3>
+          <div className="main-subject-title">
+            {dataStore.selectedSubjectFiltered.name &&
+              dataStore.selectedSubjectFiltered.name}
+          </div>
           <Link to="/homepage">
             <div className="back-to-main-button">חזרה לראשי</div>
           </Link>
         </div>
-        <Button inverse bold>
-          התחל קוויז כללי
-        </Button>
+        <Link to={`/${subjectId}/NewExam`}>
+          <Button inverse bold>
+            התחל קוויז כללי
+          </Button>
+        </Link>
         {/* what should i do if i have similar rules on different elements? */}
         <div className="back-to-main-button">או בחר נושא למטה</div>
         {/* what should i do if i have single rule? */}

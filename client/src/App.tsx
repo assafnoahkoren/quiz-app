@@ -8,6 +8,7 @@ import Navbar from "./components/navbar/Navbar";
 import './App.scss';
 import SubjectPage from "./pages/SubjectPage";
 import useGlobalColor from "./hooks/useGlobalColor";
+import NewExam from "./pages/NewExam";
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<HomePage />} />
           <Route path='/subjectPage/:subjectId' element={<SubjectPage/>}/>
+          <Route path="/:subjectId/NewExam" element={<NewExam />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </div>

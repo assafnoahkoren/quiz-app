@@ -25,7 +25,7 @@ const Login = observer(() => {
 
   return (
     <div className="page-container">
-      <div className="page-wraper">
+      <div className="page-wrapper">
         <br></br>
         <div className="page-header_container">
           <div className="page-header_headline">ברוכים הבאים 👋 </div>

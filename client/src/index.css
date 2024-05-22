@@ -18,6 +18,11 @@
   font-family: inherit!important;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 body {
   margin: 0;
 }
