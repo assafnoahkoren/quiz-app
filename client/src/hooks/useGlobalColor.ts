@@ -1,11 +1,7 @@
 const useGlobalColor = () => {
-  //   why this is not working after a refresh in the url of "http://localhost:5173/subjectPage/113"?
-  //   const subjectIdParam = useParams().subjectId;
+  const subjectId = localStorage.getItem("selectedSubjectId");
 
-  // is that a good practice to add ` ?? "" ` to solve: `Type 'null' is not assignable to type 'string'.`
-  const subjectId = localStorage.getItem("selectedSubjectId") ?? "";
-
-  const storedColor = localStorage.getItem(subjectId);
+  const storedColor = subjectId ? localStorage.getItem(subjectId) : null;
   document.documentElement.style.setProperty(
     "--global-subject-color",
     storedColor

@@ -1,25 +1,20 @@
 import { observer } from "mobx-react-lite";
 import { dataStore } from "../stores/DataStore";
-import { useEffect, useRef, useState } from "react";
-import SubjectOption from "../components/UIElements/SubjectOption";
+import { useEffect } from "react";
+import SubjectOption from "../components/subject/SubjectOption";
 import Button from "../components/UIElements/Button";
 import { Link } from "react-router-dom";
 import Loading from "../components/UIElements/Loading";
 
 import "./SubjectPage.scss";
+import Search from "../components/UIElements/Search";
 
 const SubjectPage = observer(() => {
-  const [selectedSubject, setSelectedSubject] = useState();
-  const backgroundColor = useRef<string | null>(null);
   const subjectId = localStorage.getItem('selectedSubjectId');
 
   useEffect(() => {
     const fetchSubject = async () => {
       await dataStore.getSubjectById(subjectId);
-      setSelectedSubject(dataStore.subjectsMap.get(subjectId)?.subject);
-      backgroundColor.current = selectedSubject
-        ? localStorage.getItem(selectedSubject.name)
-        : null;
     };
     fetchSubject();
   }, []);
@@ -31,7 +26,7 @@ const SubjectPage = observer(() => {
       <div className="subject-page_header">
         <div className="subject-page_header-top">
           <h3 className="main-subject-title">
-            {selectedSubject && selectedSubject.name}
+            {dataStore.selectedSubjectFiltered.name && dataStore.selectedSubjectFiltered.name}
           </h3>
           <Link to="/homepage">
             <div className="back-to-main-button">חזרה לראשי</div>
@@ -46,8 +41,8 @@ const SubjectPage = observer(() => {
         <div className="subjects-tree-title">עץ נושאים</div>
       </div>
       <div className="sub-subjects-container">
-        {selectedSubject &&
-          selectedSubject.Subjects.map((subject) => {
+        {dataStore.selectedSubjectFiltered &&
+          dataStore.selectedSubjectFiltered.subjects.map((subject) => {
             if (subject.Subjects.length > 0) {
               return (
                 <SubjectOption
@@ -61,6 +56,7 @@ const SubjectPage = observer(() => {
             }
           })}
       </div>
+      <Search type="sub" placeholder="חיפוש תת נושא"></Search>
     </div>
   );
 });

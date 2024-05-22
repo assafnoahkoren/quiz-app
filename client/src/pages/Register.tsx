@@ -41,7 +41,19 @@ const Register = () => {
         <Input type="password" placeholder="סיסמא" ref={passwordRef} />
         <Button onClick={registerUser}>הרשם</Button>
         <br></br>
-        <div style={{ opacity: 0.2 }}>----------------------------או----------------------------</div>
+        <div
+          style={{
+            opacity: 0.2,
+            display: "flex",
+            gap: 6,
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ height: 1, flex: 1, background: "black" }}></div>
+          <div>או</div>
+          <div style={{ height: 1, flex: 1, background: "black" }}></div>
+        </div>
         <br></br>
 
         <Link to="/login">

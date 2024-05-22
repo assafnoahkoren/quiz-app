@@ -5,6 +5,9 @@ class DataStore {
   subjectsLoading = false;
   selectedSubjectId = "";
   subjectsMap: Map<string, { isLoading: boolean; subject: any }> = new Map();
+  subjectsToShow = [];
+  selectedSubjectFiltered = { name: "", subjects: [] };
+  isSearching = false; 
 
   constructor() {
     makeAutoObservable(this);
@@ -17,7 +20,24 @@ class DataStore {
     this.subjectsLoading = false;
     if (!res.data.error) {
       this.subjects = res.data;
+      this.subjectsToShow = res.data;
     }
+  }
+
+  async getSubjectsByFilter(filter: string) {
+    this.subjectsLoading = true;
+    console.log(filter);
+    const res = await axios.get(`/api/subjects`, {
+      params: {
+        name: filter
+      }
+    });
+    this.subjectsLoading = false;
+    if (!res.data.error) {
+      this.subjects = res.data;
+    }
+    console.log(this.subjects);
+
   }
 
   setSelectedSubject(subjectId: string) {
@@ -38,12 +58,14 @@ class DataStore {
 
       const res = await axios.get(`/api/subjects/${subjectId}`);
       const data: any = res.data;
-
+      
       if (data) {
         subjectData.subject = data;
       }
-
+      
       subjectData.isLoading = false;
+      this.selectedSubjectFiltered.name = data.name;
+      this.selectedSubjectFiltered.subjects = data.Subjects;
     }
   }
 }
