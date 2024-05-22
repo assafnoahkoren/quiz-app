@@ -54,6 +54,7 @@ model Quiz {
   User                User                 @relation(fields: [userId], references: [id])
   QuizQuestionAnswers QuizQuestionAnswer[]
   status              QuizStatus           @default(STARTED)
+  config              Json                 @default("{}")
   createdAt           DateTime             @default(now())
   finishedAt          DateTime?
 }

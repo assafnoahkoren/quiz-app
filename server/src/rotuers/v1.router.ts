@@ -1,7 +1,10 @@
 import express from "express";
-import { exams } from "./exams.router";
 import { validUser } from "../middlewares/auth.middleware";
+import { quizzes } from "./quizzes.router";
+import { subjects } from "./subjects.router";
 
 export const v1 = express.Router();
 v1.use("/", validUser);
-v1.use("/exams", exams);
+v1.use("/quizzes", quizzes);
+v1.use("/subjects", subjects);
+
