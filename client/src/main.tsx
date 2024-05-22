@@ -7,7 +7,7 @@ import "@fontsource/heebo/400.css";
 import "@fontsource/heebo/600.css"
 import "@fontsource/heebo/800.css"
 import axios from 'axios'
-
+import './stores/SubjectsDomain/SubjectsDomainStore.ts'
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

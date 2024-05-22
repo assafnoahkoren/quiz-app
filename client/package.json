@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/heebo": "^5.0.22",
     "axios": "^1.6.8",
+    "fuse.js": "^7.0.0",
     "mobx": "^6.12.3",
     "mobx-persist-store": "^1.1.5",
     "mobx-react-lite": "^4.0.7",
