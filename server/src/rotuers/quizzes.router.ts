@@ -1,5 +1,6 @@
 import express from "express";
 import { db } from "../db";
+import { QuizConfig } from "@shared/types/QuizConfig";
 
 export const quizzes = express.Router();
 
