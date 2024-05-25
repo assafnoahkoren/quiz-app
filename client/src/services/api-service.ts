@@ -1,12 +1,14 @@
 import axios from "axios";
-import { QuizConfig } from '@shared/types/QuizConfig.ts'
+import { QuizConfig } from "@shared/types/QuizConfig.ts";
+import { QuizQuestionAnswerInput } from "@shared/types/QuizQuestionAnswerInput.ts";
+import { QuestionInput } from "@shared/types/QuestionInput.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
-export const apiService = {
+export const ApiService = {
   subjects: {
     getFullSubjectById: async (id: string) => {
-      const res = await axios.get<{
+      type ResponseType = {
         id: string;
         name: string;
         description: string;
@@ -26,42 +28,103 @@ export const apiService = {
             createdAt: string;
           }>;
         }>;
-      }>(`/api/v1/subjects/${id}/full`);
+      };
+      const res = await axios.get<ResponseType>(`/api/v1/subjects/${id}/full`);
       return res.data;
     },
 
     getAllRootSubjects: async () => {
-      const res = await axios.get<{
+      type ResponseType = {
         id: string;
         name: string;
         description?: string;
         parentId?: string;
         createdAt: string;
-      }>("/api/v1/subjects/root");
+      };
+      const res = await axios.get<ResponseType>("/api/v1/subjects/root");
       return res.data;
     },
   },
 
   quizzes: {
     createQuiz: async (subjectId: string, config: QuizConfig = {}) => {
-      const res = await axios.post<{
+      type ResponseType = {
         id: string;
         subjectId: string;
         userId: string;
-      }>(`/api/v1/quizzes/create`, { subjectId, config });
+      };
+      const res = await axios.post<ResponseType>(`/api/v1/quizzes/create`, {
+        subjectId,
+        config,
+      });
       return res.data;
     },
   },
 
   questions: {
-    getRandomByQuiz: async (quizId: string) => {
-      const res = await axios.post<{
+    getRandomBySubjects: async (
+      subjectIds: string[],
+      amount: number = 1,
+      config: QuizConfig = {}
+    ) => {
+      type ResponseType = {
+        answers: Array<string>;
+        text: string;
         id: string;
+        correctAnswer: string;
         subjectId: string;
-        userId: string;
-      }>(`/api/v1/quizzes/create`, { subjectId, config });
+        verified: boolean;
+      };
+      const res = await axios.get<ResponseType>(`/api/v1/quizzes/create`, {
+        data: {
+          subjectIds,
+          amount,
+          config,
+        },
+      });
       return res.data;
     },
-  }
-};
 
+    createAnswer: async ({
+      answer,
+      isCorrect,
+      sequence,
+      questionId,
+      quizId,
+      subjectId,
+    }: QuizQuestionAnswerInput) => {
+      type ResponseType = {
+        id: string;
+      };
+      const res = await axios.post<ResponseType>(
+        `/api/v1/questions/create-answer`,
+        {
+          questionAnswer: {
+            answer,
+            isCorrect,
+            sequence,
+            questionId,
+            quizId,
+            subjectId,
+          },
+        }
+      );
+      return res.data;
+    },
+
+    
+    updateQuestion: async (question: QuestionInput) => {
+      type ResponseType = {
+        id: string;
+      };
+      const res = await axios.put<ResponseType>(
+        `/api/v1/questions/update`,
+        {
+          question: question,
+        }
+      );
+      return res.data;
+    },
+    
+  },
+};
