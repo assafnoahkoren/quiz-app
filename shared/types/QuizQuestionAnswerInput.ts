@@ -1,8 +1,8 @@
 export type QuizQuestionAnswerInput = {
   answer: string;
   isCorrect: boolean;
-  sequence: number;
+  sequence?: number;
   questionId: string;
-  quizId: string;
+  quizId?: string;
   subjectId: string;
 }

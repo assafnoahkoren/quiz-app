@@ -68,14 +68,14 @@ model QuizQuestionAnswer {
   id         String   @id @default(cuid())
   questionId String
   Question   Question @relation(fields: [questionId], references: [id])
-  quizId     String
-  Quiz       Quiz     @relation(fields: [quizId], references: [id])
+  quizId     String?
+  Quiz       Quiz?     @relation(fields: [quizId], references: [id])
   subjectId  String
   Subject    Subject  @relation(fields: [subjectId], references: [id])
   userId     String
   User       User     @relation(fields: [userId], references: [id])
   answer     String
   isCorrect  Boolean
-  sequence   Int
+  sequence   Int?
   createdAt  DateTime @default(now())
 }
