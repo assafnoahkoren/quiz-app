@@ -23,7 +23,6 @@ const SubjectCard = (props: subjectCardProps) => {
   }
 
   const handleCardClick = () => {
-    document.documentElement.style.setProperty('--global-subject-color', backgroundColor);
     props.onClick()
   }
 

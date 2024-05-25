@@ -4,8 +4,8 @@ class DataStore {
   subjects = [];
   subjectsLoading = false;
   selectedSubjectId = "";
-  subjectsMap: { [subjectId: string]: { isLoading: boolean; subject: any } } =
-{};
+  subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } =
+    {};
 
   constructor() {
     makeAutoObservable(this);
@@ -29,14 +29,14 @@ class DataStore {
   }
 
   async getSubjectById(subjectId: string) {
-    if (!this.subjectsMap[subjectId].subject) {
-      this.subjectsMap[subjectId].isLoading = true;
-      const res = await axios.get(`/api/subjects/${subjectId}`);
-      if (res.data) {
-        this.subjectsMap[subjectId].subject = res.data;
-      }
-      this.subjectsMap[subjectId].isLoading = false;
+    if (this.subjectsMap[subjectId]?.subject) return;
+    this.subjectsMap[subjectId] = {}
+    this.subjectsMap[subjectId].isLoading = true;
+    const res = await axios.get(`/api/subjects/${subjectId}`);
+    if (res.data) {
+      this.subjectsMap[subjectId].subject = res.data;
     }
+    this.subjectsMap[subjectId].isLoading = false;
   }
 }
 

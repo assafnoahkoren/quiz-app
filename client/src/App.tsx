@@ -7,7 +7,8 @@ import Navbar from "./components/navbar/Navbar";
 
 import './App.scss';
 import SubjectPage from "./pages/SubjectPage";
-
+import { ApiService } from "./services/api-service";
+ApiService
 const App = () => {
   return (
     <Router>
@@ -18,7 +19,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<HomePage />} />
           <Route path='/subjectPage/:subjectId' element={<SubjectPage/>}/>
-          <Route path="*" element={<HomePage />} />
+          <Route path="*"  element={<Login />} />
         </Routes>
       </div>
     </Router>

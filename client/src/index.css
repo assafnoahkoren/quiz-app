@@ -1,5 +1,9 @@
+@import url('./assets/fontawesome/css/all.min.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  font-family: 'Heebo'!important;
   line-height: 1.5;
   font-weight: 400;
   direction: rtl;
@@ -10,13 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-*, *::before, *::after {
-  font-family: inherit!important;
+*:not(i) {
+  font-family: 'Heebo' !important;
 }
 
-::placeholder {
-  font-family: inherit!important;
-}
 
 body {
   margin: 0;

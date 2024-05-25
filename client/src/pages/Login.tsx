@@ -17,7 +17,7 @@ const Login = observer(() => {
         emailRef.current!.value,
         passwordRef.current!.value
       );
-      navigate("/homepage");
+      navigate("/home");
     } catch {
       alert("incorrect info");
     }

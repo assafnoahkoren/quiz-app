@@ -23,13 +23,15 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
     <>
       {subjects ? (
         <>
-          <div className={`subject-option_container more`} onClick={hideOrShow}>
+          <div className={`subject-option_container more`}>
             <div className="subject-option_name">{name}</div>
             <div className="subject-option_left">
               <div className="subject-option_subjcount">
                 {subjects.length} תתי נושאים{" "}
               </div>
-              <div className="subject-option_expand">/\</div>
+              <div className="subject-option_expand" onClick={hideOrShow}>
+                <i className={`fa-solid fa-chevron-${isHidden ? "down" : "up"}`}></i>
+              </div>
             </div>
           </div>
           {subjects.map((curSubject) => {
@@ -39,7 +41,19 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
                   isHidden ? "hidden" : ""
                 }`}
               >
-                <div className="subject-option_name">{curSubject.name}</div>
+                <div className="subject-option_name flex justify-between w-full gap-2">
+                  <div className="truncate">
+                    {curSubject.name} 
+                  </div>
+                  <div className="w-max whitespace-nowrap font-normal">
+                    {curSubject._count.Questions}
+                    &nbsp;
+                    <span className="text-sm">
+                      שאלות 
+                    </span>
+                  </div>
+                </div>
+                
               </div>
             );
           })}
