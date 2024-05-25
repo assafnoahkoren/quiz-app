@@ -41,8 +41,8 @@ model Question {
   Subject             Subject              @relation(fields: [subjectId], references: [id])
   text                String
   correctAnswer       String
+  verified            Boolean              @default(false)
   answers             String[]
-  quizId              String?
   QuizQuestionAnswers QuizQuestionAnswer[]
 }
 
@@ -54,6 +54,7 @@ model Quiz {
   User                User                 @relation(fields: [userId], references: [id])
   QuizQuestionAnswers QuizQuestionAnswer[]
   status              QuizStatus           @default(STARTED)
+  config              Json                 @default("{}")
   createdAt           DateTime             @default(now())
   finishedAt          DateTime?
 }
@@ -75,5 +76,6 @@ model QuizQuestionAnswer {
   User       User     @relation(fields: [userId], references: [id])
   answer     String
   isCorrect  Boolean
+  sequence   Int
   createdAt  DateTime @default(now())
 }
