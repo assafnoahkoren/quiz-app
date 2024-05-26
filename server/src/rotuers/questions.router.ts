@@ -67,10 +67,10 @@ questions.patch("/update", async (req: UpdateQuestionReq, res) => {
 type CreateAnserReq = Request<
   {},
   {},
-  { answer: Prisma.QuizQuestionAnswerUncheckedCreateInput }
+  { questionAnswer: Prisma.QuizQuestionAnswerUncheckedCreateInput }
 >;
 questions.post("/create-answer", async (req: CreateAnserReq, res) => {
-  const { answer: questionAnswer } = req.body;
+  const { questionAnswer } = req.body;
   
   const result = await db.quizQuestionAnswer.create({
     data: {
