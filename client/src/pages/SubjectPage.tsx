@@ -21,13 +21,13 @@ const SubjectPage = observer(() => {
       // setSelectedSubject(
       //   dataStore.subjectsMap[subjectId].subject
       // );
-      
+
     };
     fetchSubject();
   }, [subjectId]);
 
   const selectedSubject = dataStore.subjectsMap[dataStore.selectedSubjectId];
-  backgroundColor.current = selectedSubject?.subject ? localStorage.getItem(selectedSubject.subject.name): null;
+  backgroundColor.current = selectedSubject?.subject ? localStorage.getItem(selectedSubject.subject.name) : null;
   document.documentElement.style.setProperty('--global-subject-color', backgroundColor.current);
   return (
     <>
@@ -52,19 +52,13 @@ const SubjectPage = observer(() => {
         </div>
         <div className="sub-subjects-container">
           {selectedSubject &&
-            selectedSubject.subject.Subjects.map((subject) => {
-              if (subject.Subjects.length > 0) {
-                return (
-                  <SubjectOption
-                    key={subject.id}
-                    name={subject.name}
-                    subjects={subject.Subjects}
-                  />
-                );
-              } else {
-                return <SubjectOption key={subject.id} name={subject.name} />;
-              }
-            })}
+            selectedSubject.subject.Subjects.map((subject) => (
+              <SubjectOption
+                key={subject.id}
+                name={subject.name}
+                subjects={subject.Subjects}
+              />
+            ))}
         </div>
       </div>}
     </>

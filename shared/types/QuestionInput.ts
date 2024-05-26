@@ -4,4 +4,5 @@ export type QuestionInput = {
   correctAnswer?:  string
   verified?: boolean
   answers?: string[]
+  subjectId: string
 }

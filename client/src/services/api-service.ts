@@ -67,20 +67,18 @@ export const ApiService = {
       amount: number = 1,
       config: QuizConfig = {}
     ) => {
-      type ResponseType = {
+      type ResponseType = Array<{
         answers: Array<string>;
         text: string;
         id: string;
         correctAnswer: string;
         subjectId: string;
         verified: boolean;
-      };
-      const res = await axios.get<ResponseType>(`/api/v1/quizzes/create`, {
-        data: {
-          subjectIds,
-          amount,
-          config,
-        },
+      }>;
+      const res = await axios.post<ResponseType>(`/api/v1/questions/get-random-by-subjects`, {
+        subjectIds,
+        amount,
+        config,
       });
       return res.data;
     },

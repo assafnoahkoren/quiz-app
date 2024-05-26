@@ -10,7 +10,7 @@ type GetRandomBySubjectReq = Request<
   {},
   { subjectIds: string[]; config: QuizConfig; amount: number }
 >;
-questions.get(
+questions.post(
   "/get-random-by-subjects",
   async (req: GetRandomBySubjectReq, res) => {
     const { subjectIds, config, amount } = req.body;
@@ -21,7 +21,7 @@ questions.get(
         },
       },
     });
-    console.log(questionsCount);
+    console.log(req.body);
 
     const questions = await db.question.findMany({
       where: {

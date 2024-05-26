@@ -10,5 +10,5 @@
     display: flex;
     align-items: baseline;
     justify-content: center;
-    min-height: calc(100vh - var(--navbar-height) - 5px);
+    height: calc(100vh - var(--navbar-height) - 5px);
 }
