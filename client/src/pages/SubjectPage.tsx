@@ -1,14 +1,16 @@
 import { observer } from "mobx-react-lite";
 import { dataStore } from "../stores/DataStore";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SubjectOption from "../components/UIElements/SubjectOption";
 
 import "./SubjectPage.scss";
 import Button from "../components/UIElements/Button";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/UIElements/Loading";
+import { quizStore } from "../stores/QuizStore";
 
 const SubjectPage = observer(() => {
+  const navigate = useNavigate()
   const { subjectId } = useParams();
   // const [selectedSubject, setSelectedSubject] = useState();
   const backgroundColor = useRef<string | null>(null);
@@ -26,13 +28,21 @@ const SubjectPage = observer(() => {
     fetchSubject();
   }, [subjectId]);
 
+
   const selectedSubject = dataStore.subjectsMap[dataStore.selectedSubjectId];
+
+  const startQuiz = () => {
+    const allIds = flattenSubjectIds(JSON.parse(JSON.stringify(selectedSubject)).subject);
+    quizStore.startQuiz(allIds);
+    navigate('/quiz')
+    
+  };
   backgroundColor.current = selectedSubject?.subject ? localStorage.getItem(selectedSubject.subject.name) : null;
   document.documentElement.style.setProperty('--global-subject-color', backgroundColor.current);
   return (
     <>
       {selectedSubject?.isLoading && <Loading></Loading>}
-      {selectedSubject?.subject && <div className="page-wraper mt-4">
+      {selectedSubject?.subject && <div className="page-wraper mt-4 px-4">
         <div className="subject-page_header">
           <div className="subject-page_header-top mb-2">
             <h3 className="main-subject-title">
@@ -42,7 +52,7 @@ const SubjectPage = observer(() => {
               <div className="back-to-main-button">חזרה לראשי</div>
             </Link>
           </div>
-          <Button inverse bold>
+          <Button inverse bold onClick={startQuiz}>
             התחל קוויז כללי
           </Button>
           {/* what should i do if i have similar rules on different elements? */}
@@ -67,3 +77,20 @@ const SubjectPage = observer(() => {
 });
 
 export default SubjectPage;
+
+const flattenSubjectIds = (subject: any): string[] => {
+  const ids: string[] = [subject.id];
+
+  const traverse = (subjects: any[]) => {
+      for (const sub of subjects) {
+          ids.push(sub.id);
+          if (sub.Subjects.length > 0) {
+              traverse(sub.Subjects);
+          }
+      }
+  };
+
+  traverse(subject.Subjects);
+
+  return ids;
+};

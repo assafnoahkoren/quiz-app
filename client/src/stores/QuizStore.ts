@@ -41,15 +41,11 @@ class QuizStore {
   }
 
   get currentQuestion() {
-    if (this.index >= this.questions.length) {
-      this.index = this.questions.length - 1;
-    } else if (this.index < 0) {
-      this.index = 0;
-    }
     return this.questions[this.index];
   }
 
   selectAnswer(answer: string) {
+    if (this.selectedAnswer) return;
     this.selectedAnswerMap[this.currentQuestion.id] = answer;
   }
 

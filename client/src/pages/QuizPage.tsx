@@ -17,7 +17,7 @@ export const QuizPage = observer(() => {
       quizStore.checkAnswer();
       quizStore.createAnswer(quizStore.selectedAnswer);
     }
-  }, []);
+  }, [navigate]);
 
   return <div className="quiz-page w-full h-full flex flex-col justify-between">
     <div className="upper-part">
