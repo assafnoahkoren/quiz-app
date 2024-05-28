@@ -6,6 +6,7 @@ import { makePersistable } from "mobx-persist-store";
 class AuthStore {
   jwt?: string;
   isLogged = false;
+  loading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -17,11 +18,21 @@ class AuthStore {
   }
 
   async login(email: string, password: string) {
-    const res = await axios.post("/auth/login", {
-      email: email,
-      password: password,
-    });
-    const data = res.data;
+    this.loading = true;
+    let res;
+    try {
+      res = await axios.post("/auth/login", {
+        email: email,
+        password: password,
+      });  
+    } catch (error) {
+      this.loading = false;
+    }
+    
+
+    this.loading = false;
+
+    const data = res?.data;
 
     runInAction(() => {
       if (data.user) {
@@ -37,7 +48,7 @@ class AuthStore {
     runInAction(() => {
       this.jwt = "";
       this.isLogged = false;
-      console.log("is logged: ", this.isLogged);
+      window.location.href = "/";
     });
 
   }

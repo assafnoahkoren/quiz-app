@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Input from "../components/UIElements/Input";
 import Button from "../components/UIElements/Button";
 import { Link, useNavigate } from "react-router-dom";
+import { BarLoader, MoonLoader } from "react-spinners";
 
 const Login = observer(() => {
   const emailRef = useRef();
@@ -33,10 +34,15 @@ const Login = observer(() => {
         </div>
         <br></br>
         <Input placeholder="אימייל" type="text" ref={emailRef} />
-        <Input placeholder="סיסמא" type="text" ref={passwordRef} />
-        <Button onClick={authUser}>התחבר</Button>
+        <Input placeholder="סיסמא" type="password" ref={passwordRef} />
+        <Button onClick={authUser}>
+          
+          <div className="flex justify-center w-full">
+          {authStore.loading ? <BarLoader color="white" /> : 'התחבר'}
+          </div>        
+        </Button>
         <br></br>
-        <div style={{ opacity: 0.2 }}>----------------------------או----------------------------</div>
+        <div style={{ opacity: 0.2 }}>או</div>
         <br></br>
         <Link to="/register">
           <Button inverse>הרשם</Button>
