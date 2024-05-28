@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node src/app.ts",
     "db": "prisma db push",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/server/app.js"
   },
   "author": "",
   "license": "ISC",
