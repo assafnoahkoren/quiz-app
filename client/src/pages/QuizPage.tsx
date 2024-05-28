@@ -3,6 +3,7 @@ import { quizStore } from "../stores/QuizStore";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { BarLoader } from "react-spinners";
+import NiceModal from "@ebay/nice-modal-react";
 
 export const QuizPage = observer(() => {
   const navigate = useNavigate();
@@ -19,6 +20,10 @@ export const QuizPage = observer(() => {
       quizStore.createAnswer(quizStore.selectedAnswer);
     }
   }, [navigate]);
+
+  const editQuestion = useCallback(() => {
+    NiceModal.show('QuestionEditModal').then(() => {})
+  }, []);
 
   return <div className="quiz-page w-full h-full flex flex-col justify-between">
     <div className="upper-part">
@@ -37,14 +42,20 @@ export const QuizPage = observer(() => {
     </div>
 
     <div>
-      <div className="lower-part-actions p-2">
-        <div className="p-2 text-slate-500 flex gap-1 items-center">
+      <div className="lower-part-actions p-2 relative z-40">
+        <div onClick={editQuestion} className="p-2 text-slate-500 flex gap-1 items-center">
           <i className="fa-regular fa-pencil me-2"></i>
-          <span>עריכה</span>
+          <span>
+          עריכה
+          <span className="text-xs ms-2">
+            {quizStore.currentQuestion?.verified && '(נערך בעבר)'}
+          </span>
+          </span>
+
         </div>
       </div>
-      <div className="lower-part" style={{ boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)' }}>
-        <div className="w-full flex justify-center">
+      <div className="lower-part relative" style={{ boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)' }}>
+        <div className="w-full flex justify-center absolute bottom-full mb-4 left-0">
           {quizStore.currectQuestionState === 'correct' ? <i className="fa-regular fa-circle-check text-green-500 text-5xl"></i> : null}
           {quizStore.currectQuestionState === 'incorrect' ? <i className="fa-regular fa-circle-xmark text-red-500 text-5xl"></i> : null}
         </div>

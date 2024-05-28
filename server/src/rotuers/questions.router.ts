@@ -47,7 +47,7 @@ type UpdateQuestionReq = Request<
   {},
   { question: Prisma.QuestionUpdateInput }
 >;
-questions.patch("/update", async (req: UpdateQuestionReq, res) => {
+questions.post("/update", async (req: UpdateQuestionReq, res) => {
   const { question } = req.body;
 
   if (!question.id) {

@@ -115,7 +115,7 @@ export const ApiService = {
       type ResponseType = {
         id: string;
       };
-      const res = await axios.put<ResponseType>(
+      const res = await axios.post<ResponseType>(
         `/api/v1/questions/update`,
         {
           question: question,

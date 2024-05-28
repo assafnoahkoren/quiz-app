@@ -12,6 +12,7 @@ class QuizStore {
   index = 0;
   selectedAnswerMap: Record<string, string> = {};
   stateMap: Record<string, "correct" | "incorrect" | undefined> = {};
+  saveLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -97,6 +98,13 @@ class QuizStore {
 
   get atEnd() {
     return this.index >= this.questions.length - 1;
+  }
+
+  async saveQuestion(question: QuestionInput) {
+    this.saveLoading = true;
+    question.verified = true;
+    await ApiService.questions.updateQuestion(question);
+    this.saveLoading = false;
   }
 }
 

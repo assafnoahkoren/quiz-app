@@ -21,7 +21,8 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@shared/*": ["../shared/*"]
-    }
+    },
+    "noImplicitAny": false
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],
