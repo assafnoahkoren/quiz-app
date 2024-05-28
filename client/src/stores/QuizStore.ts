@@ -45,7 +45,7 @@ class QuizStore {
   }
 
   selectAnswer(answer: string) {
-    if (this.selectedAnswer) return;
+    if (this.currectQuestionState) return;
     this.selectedAnswerMap[this.currentQuestion.id] = answer;
   }
 
