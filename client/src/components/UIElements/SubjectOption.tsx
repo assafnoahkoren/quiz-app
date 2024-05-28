@@ -15,7 +15,6 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
   name,
   subjects,
 }) => {
-  console.log('subjects', JSON.parse(JSON.stringify(subjects)));
   
   const [isHidden, setIsHidden] = useState(true);
   const navigate = useNavigate();
@@ -33,7 +32,7 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
     <>
       {subjects ? (
         <>
-          <div className="flex w-full items-center justify-center">
+          <div className="SubjectOption flex w-full items-center justify-center">
             <div className={`subject-option_container more flex-1`} onClick={() => onClickSubject(subjects.map((subject) => subject.id))}>
               <div className="subject-option_name">{name}</div>
               <div className="subject-option_left">
@@ -50,7 +49,7 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
             return (
               <div
                 onClick={() => onClickSubject([curSubject.id])}
-                className={`w-full border-2 border-[--global-subject-color] p-2 mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
+                className={`SubSubjectOption w-full border-2 border-[--global-subject-color] p-2 mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
               >
                 <div className="subject-option_name flex justify-between w-full gap-2">
                   <div className="truncate">

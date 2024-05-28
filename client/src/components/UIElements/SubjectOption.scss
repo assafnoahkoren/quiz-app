@@ -46,10 +46,14 @@
     opacity: 0.3;
 }
 
-.hidden {
+
+.SubSubjectOption {
+    height: 44px;
+    transition: all 1s ease-in-out 0s;
+}
+.SubSubjectOption.hidden {
     opacity: 0;
     border: 0;
-    max-height: 0;
-    transition: all 0.2s ease-in-out 0s;
+    height: 0;
     overflow: hidden;
 }

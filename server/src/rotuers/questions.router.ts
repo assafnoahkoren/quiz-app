@@ -21,7 +21,6 @@ questions.post(
         },
       },
     });
-    console.log(req.body);
 
     const questions = await db.question.findMany({
       where: {
