@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { quizStore } from "../stores/QuizStore";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import NiceModal from "@ebay/nice-modal-react";
+import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 
 export const QuizPage = observer(() => {
   const navigate = useNavigate();
@@ -22,11 +23,42 @@ export const QuizPage = observer(() => {
   }, [navigate]);
 
   const editQuestion = useCallback(() => {
-    NiceModal.show('QuestionEditModal').then(() => {})
+    NiceModal.show('QuestionEditModal').then(() => { })
   }, []);
+
+  const swiperRef = useRef<SwiperClass>();
+
+  const clickQuestionSquare = (index) => {
+    quizStore.index = index;
+  }
+
+  useEffect(() => {
+    if (!swiperRef.current) return;
+    swiperRef.current.slideTo(quizStore.index);
+  }, [quizStore.index]);
 
   return <div className="quiz-page w-full h-full flex flex-col justify-between">
     <div className="upper-part">
+      <div className="w-full mt-2 overflow-visible">
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={window.innerWidth / 40}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => swiperRef.current = swiper}
+          centeredSlides
+          style={{paddingTop: 6, paddingBottom: 6}}
+        >
+          {quizStore.questions.map((question, index) => (
+            <SwiperSlide>
+              <div className={`ms-2 bg-blue-500 w-8 h-8 rounded-lg flex justify-center items-center text-white font-bold ${quizStore.index === index ? 'scale-125' : 'scale-100'} transition-all`}
+              onClick={() => clickQuestionSquare(index)}>
+                {index + 1}
+              </div>
+            </SwiperSlide>
+          ))}
+
+        </Swiper>
+      </div>
       <div className="flex justify-between items-center p-4 pb-0">
         <div className="text-xl opacity-50">
           #{quizStore.index + 1}
@@ -46,10 +78,10 @@ export const QuizPage = observer(() => {
         <div onClick={editQuestion} className="p-2 text-slate-500 flex gap-1 items-center">
           <i className="fa-regular fa-pencil me-2"></i>
           <span>
-          עריכה
-          <span className="text-xs ms-2">
-            {quizStore.currentQuestion?.verified && '(נערך בעבר)'}
-          </span>
+            עריכה
+            <span className="text-xs ms-2">
+              {quizStore.currentQuestion?.verified && '(נערך בעבר)'}
+            </span>
           </span>
 
         </div>

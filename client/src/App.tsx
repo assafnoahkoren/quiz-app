@@ -12,6 +12,7 @@ import { QuizPage } from "./pages/QuizPage";
 import NiceModal from "@ebay/nice-modal-react";
 ApiService
 import './components/QuestionEditModal'
+import 'swiper/css';
 
 
 const App = () => {
