@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { authStore } from "../stores/AuthStore";
 import { useNavigate } from "react-router-dom";
 import SubjectCard from "../components/UIElements/SubjectCard";
-import { subjectType } from "../types/subjectType";
+import { SubjectType } from "../types/subjectType";
 import Loading from "../components/UIElements/Loading";
 
 import "./Homepage.scss";
@@ -30,8 +30,8 @@ const HomePage = observer(() => {
             <h3>מבחנים חדשים</h3>
             <div className="main-subjects-container">
               {dataStore.subjects
-                .filter((subject: subjectType) => subject.parentId === null)
-                .map((subject: subjectType) => (
+                .filter((subject: SubjectType) => subject.parentId === null)
+                .map((subject: SubjectType) => (
                   <SubjectCard
                     isNew
                     onClick={() => subjectClicked(subject.id)}

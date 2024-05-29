@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import NiceModal from "@ebay/nice-modal-react";
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
+import { dataStore } from "../stores/DataStore";
 
 export const QuizPage = observer(() => {
   const navigate = useNavigate();
@@ -37,6 +38,19 @@ export const QuizPage = observer(() => {
     swiperRef.current.slideTo(quizStore.index);
   }, [quizStore.index]);
 
+  const squareColor = (id) => {
+    if (quizStore.stateMap[id] === 'correct') {
+      return 'bg-lime-500 text-white';
+    } else if (quizStore.stateMap[id] === 'incorrect') {
+      return 'bg-red-500 text-white';
+    } else {
+      return 'bg-blue-500 text-white';
+    }
+
+  }
+
+  console.log('dataStore.flatSubjects', JSON.parse(JSON.stringify(dataStore.subjectById)));
+  
   return <div className="quiz-page w-full h-full flex flex-col justify-between">
     <div className="upper-part">
       <div className="w-full mt-2 overflow-visible">
@@ -50,7 +64,7 @@ export const QuizPage = observer(() => {
         >
           {quizStore.questions.map((question, index) => (
             <SwiperSlide>
-              <div className={`ms-2 bg-blue-500 w-8 h-8 rounded-lg flex justify-center items-center text-white font-bold ${quizStore.index === index ? 'scale-125' : 'scale-100'} transition-all`}
+              <div className={`ms-2 ${squareColor(question.id)} w-8 h-8 rounded-lg flex justify-center items-center  font-bold ${quizStore.index === index ? 'scale-125' : 'scale-100'} transition-all`}
               onClick={() => clickQuestionSquare(index)}>
                 {index + 1}
               </div>
@@ -61,11 +75,14 @@ export const QuizPage = observer(() => {
       </div>
       <div className="flex justify-between items-center p-4 pb-0">
         <div className="text-xl opacity-50">
-          #{quizStore.index + 1}
+          #{quizStore.index + 1}          
         </div>
         <div className="font-bold" onClick={() => navigate(-1)}>
           חזרה
         </div>
+      </div>
+      <div className="px-4 text-lg opacity-50">
+        {dataStore.subjectById[quizStore.currentQuestion?.subjectId]?.name}
       </div>
       <div className="question-text text-xl font-bold p-4 pt-1">
         {quizStore.currentQuestion?.text}
@@ -88,7 +105,7 @@ export const QuizPage = observer(() => {
       </div>
       <div className="lower-part relative" style={{ boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)' }}>
         <div className="w-full flex justify-center absolute bottom-full mb-4 left-0">
-          {quizStore.currectQuestionState === 'correct' ? <i className="fa-regular fa-circle-check text-green-500 text-5xl"></i> : null}
+          {quizStore.currectQuestionState === 'correct' ? <i className="fa-regular fa-circle-check text-lime-500 text-5xl"></i> : null}
           {quizStore.currectQuestionState === 'incorrect' ? <i className="fa-regular fa-circle-xmark text-red-500 text-5xl"></i> : null}
         </div>
         <div className="p-4 flex flex-col gap-2">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./SubjectOption.scss";
-import { subjectType } from "../../types/subjectType";
+import { SubjectType } from "../../types/subjectType";
 import { useNavigate } from "react-router-dom";
 import { quizStore } from "../../stores/QuizStore";
 
@@ -8,7 +8,7 @@ interface SubjectOptionProps {
   name: string;
   parentId?: string;
   containMoreSubjects?: boolean;
-  subjects?: subjectType[];
+  subjects?: SubjectType[];
 }
 
 const SubjectOption: React.FC<SubjectOptionProps> = ({

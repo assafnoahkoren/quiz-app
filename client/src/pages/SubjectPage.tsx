@@ -8,6 +8,7 @@ import Button from "../components/UIElements/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/UIElements/Loading";
 import { quizStore } from "../stores/QuizStore";
+import { SubjectType } from "../types/subjectType";
 
 const SubjectPage = observer(() => {
   const navigate = useNavigate()
@@ -94,3 +95,4 @@ const flattenSubjectIds = (subject: any): string[] => {
 
   return ids;
 };
+

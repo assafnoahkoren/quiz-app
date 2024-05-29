@@ -23,7 +23,6 @@ class QuizStore {
         "config",
         "questions",
         "index",
-        "selectedAnswer",
       ],
       storage: window.localStorage,
     });
@@ -90,7 +89,7 @@ class QuizStore {
 
   answerColor(answer: string) {
     if (this.currectQuestionState) {
-      return this.currentQuestion.correctAnswer === answer ? "green" : "red";
+      return this.currentQuestion.correctAnswer === answer ? "lime" : "red";
     } else {
       return "blue";
     }
