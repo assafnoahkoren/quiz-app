@@ -1,8 +1,9 @@
+import React, { ReactNode } from "react";
 import "./Button.scss";
 
 type buttonProps = {
   onClick?: () => void;
-  children: string;
+  children: ReactNode;
   inverse?: boolean;
   bold?: boolean;
 };

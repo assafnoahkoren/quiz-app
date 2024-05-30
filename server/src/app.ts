@@ -5,12 +5,25 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import "express-async-errors";
 import jwt from "jwt-simple";
 import cors from "cors";
+import { v1 } from "./rotuers/v1.router";
+import { db } from "./db";
 
-const db = new PrismaClient();
+declare global {
+  namespace Express {
+    interface Request {
+      currentUserId: string
+      currentUserRoles: string[]
+    }
+  }
+}
+
+
 const app = express();
 app.use(cors());
 
 app.use(bodyParser.json());
+
+app.use('/api/v1', v1)
 
 app.get("/api", (req, res) => {
   res.json({
@@ -57,6 +70,7 @@ app.post("/auth/login", async (req, res) => {
     select: {
       id: true,
       email: true,
+      roles: true,
     },
   });
   if (user) {
@@ -70,26 +84,6 @@ app.post("/auth/login", async (req, res) => {
   }
 });
 
-app.use("/api", (req, res, next) => {
-  const token = req.headers.authorization;
-  console.log("token", token);
-
-  let payload;
-  try {
-    payload = jwt.decode(token!, process.env.JWT_SECRET!);
-  } catch (error) {
-    res.json({ error });
-    return;
-  }
-  console.log("payload", payload);
-
-  if (!payload) {
-    res.json({ error: "No valid token" });
-    return;
-  }
-
-  next();
-});
 
 //HOME PAGE
 
@@ -153,20 +147,8 @@ app.get("/api/subjects/:subjectId", async (req, res) => {
   res.status(200).json(subject);
 });
 
-// EXAM PAGE
+// QUIZ PAGE
 
-// Create a new exam
-app.post("/api/create-exam", async (req, res) => {
-  const { subjectId, userId } = req.body;
-  const createdExam = await db.exam.create({
-    data: {
-      subjectId: subjectId,
-      userId: userId,
-    },
-    include: {},
-  });
-  res.json(createdExam);
-});
 
 //get random question in a specific subject
 app.get("/api/subjects/:subjectId/random", async (req, res) => {
@@ -203,12 +185,12 @@ app.get("/api/subjects/:subjectId/random", async (req, res) => {
 });
 
 //@ts-ignore
-app.use((error, req, res, next) => {
-  if (res.headersSent) {
-    return next(error);
-  }
-  res.status(error.code).send(error.message);
-});
+// app.use((error, req, res, next) => {
+//   if (res.headersSent) {
+//     return next(error);
+//   }
+//   res.status(error.code).send(error.message);
+// });
 
 const port = process.env.SERVER_PORT;
 app.listen(port, () => {

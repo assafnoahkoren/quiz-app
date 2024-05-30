@@ -10,8 +10,8 @@
     border: 2px solid var(--global-subject-color);
     box-shadow: 0 2px 1px 2px rgba(0, 0, 0, 0.026);
     color: #ffffff;
-    border-radius: 10px;
-    padding: 0 10px;
+    border-radius: 0 10px 10px 0;
+    padding: 0 10px 0 0;
     cursor: pointer;
     user-select: none;
 
@@ -30,7 +30,7 @@
 
 .subject-option_name {
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1em;
     color: var(--global-subject-color);
 }
 
@@ -40,13 +40,18 @@
 }
 
 .subject-option_subjcount {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 15px;
     color: black;
     opacity: 0.3;
 }
 
-.hidden {
+
+.SubSubjectOption {
+    height: 44px;
+    transition: all 1s ease-in-out 0s;
+}
+.SubSubjectOption.hidden {
     opacity: 0;
     max-height: 0;
     transition: all 0.2s ease-in-out 0s;

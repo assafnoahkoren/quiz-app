@@ -9,24 +9,34 @@ import './App.scss';
 import SubjectPage from "./pages/SubjectPage";
 import useGlobalColor from "./hooks/useGlobalColor";
 import NewExam from "./pages/NewExam";
+import { ApiService } from "./services/api-service";
+import { QuizPage } from "./pages/QuizPage";
+import NiceModal from "@ebay/nice-modal-react";
+ApiService
+import './components/QuestionEditModal'
+import 'swiper/css';
+
 
 const App = () => {
 
   useGlobalColor();
   return (
-    <Router>
-      <Navbar />
-      <div className="main-container">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path='/subjectPage/:subjectId' element={<SubjectPage/>}/>
-          <Route path="/:subjectId/NewExam" element={<NewExam />} />
-          <Route path="*" element={<HomePage />} />
-        </Routes>
-      </div>
-    </Router>
+    <NiceModal.Provider>
+      <Router>
+        <Navbar />
+        <div className="main-container">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/quiz" element={<QuizPage />} />
+            <Route path='/subjectPage/:subjectId' element={<SubjectPage />} />
+            <Route path="/:subjectId/NewExam" element={<NewExam />} />
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </div>
+      </Router>
+    </NiceModal.Provider>
   );
 };
 

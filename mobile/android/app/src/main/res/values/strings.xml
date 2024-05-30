@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">quiz-mobile</string>
+    <string name="title_activity_main">quiz-mobile</string>
+    <string name="package_name">koren.com.quiz</string>
+    <string name="custom_url_scheme">koren.com.quiz</string>
+</resources>

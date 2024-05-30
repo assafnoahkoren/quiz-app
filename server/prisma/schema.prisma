@@ -14,52 +14,69 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  name     String?
-  password String
-  Exams     Exam[]
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  name                String?
+  password            String
+  Quizs               Quiz[]
+  QuizQuestionAnswers QuizQuestionAnswer[]
+  roles               String[]             @default([])
 }
 
 model Subject {
-  id          String     @id @default(cuid())
-  name        String
-  description String?
-  parentId    String?
-  createdAt   DateTime   @default(now())
-  Parent      Subject?   @relation("subjectParent", fields: [parentId], references: [id])
-  Subjects    Subject[]  @relation("subjectParent")
-  Questions   Question[]
-  Exams       Exam[]
+  id                  String               @id @default(cuid())
+  name                String
+  description         String?
+  parentId            String?
+  createdAt           DateTime             @default(now())
+  Parent              Subject?             @relation("subjectParent", fields: [parentId], references: [id])
+  Subjects            Subject[]            @relation("subjectParent")
+  Questions           Question[]
+  Quizs               Quiz[]
+  QuizQuestionAnswers QuizQuestionAnswer[]
 }
 
 model Question {
-  id            String         @id @default(cuid())
-  subjectId     String
-  Subject       Subject        @relation(fields: [subjectId], references: [id])
-  text          String
-  correctAnswer String
-  otherAnswers  String[]
-  examId        String?
-  ExamQuestions  ExamQuestion[]
+  id                  String               @id @default(cuid())
+  subjectId           String
+  Subject             Subject              @relation(fields: [subjectId], references: [id])
+  text                String
+  correctAnswer       String
+  verified            Boolean              @default(false)
+  answers             String[]
+  QuizQuestionAnswers QuizQuestionAnswer[]
 }
 
-model Exam {
-  id           String         @id @default(cuid())
-  subjectId    String
-  Subject      Subject        @relation(fields: [subjectId], references: [id])
-  userId       String
-  User         User           @relation(fields: [userId], references: [id])
-  ExamQuestion ExamQuestion[]
-  createdAt  DateTime @default(now())
+model Quiz {
+  id                  String               @id @default(cuid())
+  subjectId           String
+  Subject             Subject              @relation(fields: [subjectId], references: [id])
+  userId              String
+  User                User                 @relation(fields: [userId], references: [id])
+  QuizQuestionAnswers QuizQuestionAnswer[]
+  status              QuizStatus           @default(STARTED)
+  config              Json                 @default("{}")
+  createdAt           DateTime             @default(now())
+  finishedAt          DateTime?
 }
 
-model ExamQuestion {
+enum QuizStatus {
+  STARTED
+  FINISHED
+}
+
+model QuizQuestionAnswer {
   id         String   @id @default(cuid())
   questionId String
   Question   Question @relation(fields: [questionId], references: [id])
-  examId     String
-  Exam       Exam     @relation(fields: [examId], references: [id])
+  quizId     String?
+  Quiz       Quiz?    @relation(fields: [quizId], references: [id])
+  subjectId  String
+  Subject    Subject  @relation(fields: [subjectId], references: [id])
+  userId     String
+  User       User     @relation(fields: [userId], references: [id])
   answer     String
+  isCorrect  Boolean
+  sequence   Int?
   createdAt  DateTime @default(now())
 }

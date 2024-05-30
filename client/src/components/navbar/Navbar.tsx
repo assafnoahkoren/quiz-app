@@ -12,11 +12,12 @@ const Navbar = observer(() => {
   return (
     <div className={navbarClass}>
       {authStore.isLogged && (
-        <Link to="/login">
-          <Button inverse onClick={handleLogout}>
+        <div className="p-2 text-red-500 flex gap-1 items-center" onClick={handleLogout}>
+          <i className="fa-regular fa-right-from-bracket"></i>
+          <span> 
             התנתק
-          </Button>
-        </Link>
+          </span>
+        </div>
       )}
       <Link to="/homepage">
         <div className="navbar-logo">קוויז</div>
