@@ -6,6 +6,7 @@ import { BarLoader } from "react-spinners";
 import NiceModal from "@ebay/nice-modal-react";
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { dataStore } from "../stores/DataStore";
+import {authStore} from "../stores/AuthStore.ts";
 
 export const QuizPage = observer(() => {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ export const QuizPage = observer(() => {
 
     <div>
       <div className="lower-part-actions p-2 relative z-40">
-        <div onClick={editQuestion} className="p-2 text-slate-500 flex gap-1 items-center">
+        {authStore.hasRole('admin') && <div onClick={editQuestion} className="p-2 text-slate-500 flex gap-1 items-center">
           <i className="fa-regular fa-pencil me-2"></i>
           <span>
             עריכה
@@ -101,7 +102,7 @@ export const QuizPage = observer(() => {
             </span>
           </span>
 
-        </div>
+        </div>}
       </div>
       <div className="lower-part relative" style={{ boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)' }}>
         <div className="w-full flex justify-center absolute bottom-full mb-4 left-0">

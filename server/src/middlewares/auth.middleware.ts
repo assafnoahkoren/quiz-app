@@ -6,20 +6,22 @@ export const validUser = (
   res: Response,
   next: NextFunction
 ): void => {
-  
-  if (process.env.NODE_ENV === "development") {
+  const token = req.headers.authorization;
+
+  if (process.env.NODE_ENV === "development" && !token) {
     req.currentUserId = 'clw29uze30000ryilcveoqm17';
+    req.currentUserRoles = ['admin']
     return next();
   }
 
-  const token = req.headers.authorization;
 
   let payload;
   try {
     payload = jwt.decode(token!, process.env.JWT_SECRET!);
     req.currentUserId = payload.id;
+    req.currentUserRoles = payload.roles
   } catch (error) {
-    res.json({ error });
+    res.json({ error: 'Bad Jwt' });
     return;
   }
 

@@ -1,10 +1,12 @@
 import axios from "axios";
 import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { makePersistable } from "mobx-persist-store";
+import {JWTPayload} from "@shared/types/JWTPayload.ts";
 
 // This store will manage the authentication state of the user
 class AuthStore {
   jwt?: string;
+  user?: JWTPayload;
   isLogged = false;
   loading = false;
 
@@ -37,6 +39,7 @@ class AuthStore {
     runInAction(() => {
       if (data.user) {
         this.jwt = data.token;
+        this.user = data.user;
         this.isLogged = true;
       }
       console.log(data);
@@ -47,10 +50,15 @@ class AuthStore {
   logout() {
     runInAction(() => {
       this.jwt = "";
+      this.user = undefined;
       this.isLogged = false;
       window.location.href = "/";
     });
 
+  }
+
+  hasRole(role: string) {
+    return this.user?.roles.includes(role);
   }
 
   async register(email: string, password: string, name: string) {

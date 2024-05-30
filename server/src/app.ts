@@ -12,6 +12,7 @@ declare global {
   namespace Express {
     interface Request {
       currentUserId: string
+      currentUserRoles: string[]
     }
   }
 }
@@ -69,6 +70,7 @@ app.post("/auth/login", async (req, res) => {
     select: {
       id: true,
       email: true,
+      roles: true,
     },
   });
   if (user) {

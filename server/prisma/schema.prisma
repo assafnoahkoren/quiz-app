@@ -20,6 +20,7 @@ model User {
   password            String
   Quizs               Quiz[]
   QuizQuestionAnswers QuizQuestionAnswer[]
+  roles               String[]             @default([])
 }
 
 model Subject {
@@ -69,7 +70,7 @@ model QuizQuestionAnswer {
   questionId String
   Question   Question @relation(fields: [questionId], references: [id])
   quizId     String?
-  Quiz       Quiz?     @relation(fields: [quizId], references: [id])
+  Quiz       Quiz?    @relation(fields: [quizId], references: [id])
   subjectId  String
   Subject    Subject  @relation(fields: [subjectId], references: [id])
   userId     String
