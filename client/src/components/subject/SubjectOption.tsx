@@ -1,72 +1,80 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./SubjectOption.scss";
-import { subjectType } from "../../types/subjectType";
-import { dataStore } from "../../stores/DataStore";
-import { observer } from "mobx-react-lite";
+import { SubjectType } from "../../types/subjectType";
+import { useNavigate } from "react-router-dom";
+import { quizStore } from "../../stores/QuizStore";
 
 interface SubjectOptionProps {
   name: string;
   parentId?: string;
   containMoreSubjects?: boolean;
-  subjects?: subjectType[];
+  subjects?: SubjectType[];
 }
 
-const SubjectOption: React.FC<SubjectOptionProps> = observer(
-  ({ name, subjects }) => {
-    const [isHidden, setIsHidden] = useState(true);
+const SubjectOption: React.FC<SubjectOptionProps> = ({
+  name,
+  subjects,
+}) => {
+  
+  const [isHidden, setIsHidden] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      console.log(dataStore.isSearching);
-      dataStore.isSearching ? setIsHidden(false) : setIsHidden(true);
-    }, [dataStore.isSearching]);
-// why only when adding dataStore.isSearching to the useEffect dependencies it working? 
-// the observer shouldnt listen and render after any change?
+  const hideOrShow = () => {
+    setIsHidden(!isHidden);
+  };
 
-    const toggleHidden = () => {
-      setIsHidden(!isHidden);
-    };
+  const onClickSubject = (subjectIds: string[]) => {
+    navigate(`/quiz`);
+    quizStore.startQuiz(subjectIds);
+  };
 
-    return (
-      <>
-        {subjects ? (
-          <>
-            <div
-              className={`subject-option_container more`}
-              onClick={toggleHidden}
-            >
+  return (
+    <>
+      {subjects ? (
+        <>
+          <div className="SubjectOption flex w-full items-center justify-center">
+            <div className={`subject-option_container more flex-1`} onClick={() => onClickSubject(subjects.map((subject) => subject.id))}>
               <div className="subject-option_name">{name}</div>
               <div className="subject-option_left">
-                <div className="subject-option_subjcount">
-                  {subjects.length} תתי נושאים{" "}
-                </div>
-                {isHidden ? (
-                  <div className="subject-option_expand">/\</div>
-                ) : (
-                  <div className="subject-option_expand">\/</div>
-                )}
               </div>
             </div>
-            {subjects.map((curSubject) => {
-              return (
-                <div
-                  key={curSubject.id}
-                  className={`subject-option_container ${
-                    isHidden ? "hidden" : ""
-                  }`}
-                >
-                  <div className="subject-option_name">{curSubject.name}</div>
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <div className={`subject-option_container more`} onClick={toggleHidden}>
-            <div className="subject-option_name">{name}</div>
+            <div className="subject-option_expand flex items-center justify-center rounded-e-lg bg-[--global-subject-color] h-[--height-button] px-2 gap-2 text-white" onClick={hideOrShow}>
+              <div className="subject-option_subjcount">
+                {subjects.length} תתי נושאים{" "}
+              </div>
+              <i className={`fa-regular fa-circle-chevron-${isHidden ? "down" : "up"}`}></i>
+            </div>
           </div>
-        )}
-      </>
-    );
-  }
-);
+          {subjects.map((curSubject) => {
+            return (
+              <div
+                onClick={() => onClickSubject([curSubject.id])}
+                className={`SubSubjectOption w-full border-2 border-[--global-subject-color] p-2 mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
+              >
+                <div className="subject-option_name flex justify-between w-full gap-2">
+                  <div className="truncate">
+                    {curSubject.name}
+                  </div>
+                  <div className="w-max whitespace-nowrap font-normal">
+                    {curSubject._count.Questions}
+                    &nbsp;
+                    <span className="text-sm">
+                      שאלות
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
+        </>
+      ) : (
+        <div className={`subject-option_container more`} onClick={hideOrShow}>
+          <div className="subject-option_name">{name}</div>
+        </div>
+      )}
+    </>
+  );
+};
 
 export default SubjectOption;
