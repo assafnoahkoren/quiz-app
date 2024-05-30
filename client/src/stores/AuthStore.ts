@@ -58,7 +58,7 @@ class AuthStore {
   }
 
   hasRole(role: string) {
-    return this.user?.roles.includes(role);
+    return this.user?.roles?.includes(role);
   }
 
   async register(email: string, password: string, name: string) {

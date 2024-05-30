@@ -48,7 +48,7 @@ type UpdateQuestionReq = Request<
   { question: Prisma.QuestionUpdateInput }
 >;
 questions.post("/update", async (req: UpdateQuestionReq, res) => {
-  if (!req.currentUserRoles.includes("admin")) {
+  if (!req.currentUserRoles?.includes("admin")) {
     return res.status(403).json({ error: "Unauthorized" });
   }
 
