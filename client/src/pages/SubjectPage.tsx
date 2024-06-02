@@ -15,7 +15,7 @@ const SubjectPage = observer(() => {
   const navigate = useNavigate()
   const { subjectId } = useParams();
   // const [selectedSubject, setSelectedSubject] = useState();
-  const backgroundColor = useRef<string | null>(null);
+  // const backgroundColor = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchSubject = async () => {
@@ -39,8 +39,8 @@ const SubjectPage = observer(() => {
     navigate('/quiz')
     
   };
-  backgroundColor.current = selectedSubject?.subject ? localStorage.getItem(selectedSubject.subject.name) : null;
-  document.documentElement.style.setProperty('--global-subject-color', backgroundColor.current);
+  // backgroundColor.current = selectedSubject?.subject ? localStorage.getItem(selectedSubject.subject.name) : null;
+  // document.documentElement.style.setProperty('--global-subject-color', backgroundColor.current); 
   return (
     <>
       {selectedSubject?.isLoading && <Loading></Loading>}
@@ -50,7 +50,7 @@ const SubjectPage = observer(() => {
             <h3 className="main-subject-title">
               {selectedSubject.subject.name}
             </h3>
-            <Link to="/homepage">
+            <Link to="/home">
               <div className="back-to-main-button">חזרה לראשי</div>
             </Link>
           </div>
