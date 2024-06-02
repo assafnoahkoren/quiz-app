@@ -7,6 +7,8 @@ import Navbar from "./components/navbar/Navbar";
 
 import './App.scss';
 import SubjectPage from "./pages/SubjectPage";
+import useGlobalColor from "./hooks/useGlobalColor";
+import NewExam from "./pages/NewExam";
 import { ApiService } from "./services/api-service";
 import { QuizPage } from "./pages/QuizPage";
 import NiceModal from "@ebay/nice-modal-react";
@@ -16,6 +18,8 @@ import 'swiper/css';
 
 
 const App = () => {
+
+  useGlobalColor();
   return (
     <NiceModal.Provider>
       <Router>
@@ -27,6 +31,7 @@ const App = () => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/quiz" element={<QuizPage />} />
             <Route path='/subjectPage/:subjectId' element={<SubjectPage />} />
+            <Route path="/:subjectId/NewExam" element={<NewExam />} />
             <Route path="*" element={<Login />} />
           </Routes>
         </div>

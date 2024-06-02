@@ -8,7 +8,7 @@ const Navbar = observer(() => {
   const handleLogout = () => {
     authStore.logout();
   };
-  const navbarClass = authStore.isLogged ? 'navbar logged' : 'navbar';
+  const navbarClass = authStore.isLogged ? "navbar logged" : "navbar";
   return (
     <div className={navbarClass}>
       {authStore.isLogged && (
@@ -19,9 +19,9 @@ const Navbar = observer(() => {
           </span>
         </div>
       )}
-      <div className="navbar-logo">
-        קוויז
-      </div>
+      <Link to="/homepage">
+        <div className="navbar-logo">קוויז</div>
+      </Link>
     </div>
   );
 });

@@ -26,7 +26,7 @@ const Login = observer(() => {
 
   return (
     <div className="page-container">
-      <div className="page-wraper">
+      <div className="page-wrapper">
         <br></br>
         <div className="page-header_container">
           <div className="page-header_headline">ברוכים הבאים 👋 </div>
@@ -42,7 +42,19 @@ const Login = observer(() => {
           </div>        
         </Button>
         <br></br>
-        <div style={{ opacity: 0.2 }}>או</div>
+        <div
+          style={{
+            opacity: 0.2,
+            display: "flex",
+            gap: 6,
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ height: 1, flex: 1, background: "black" }}></div>
+          <div>או</div>
+          <div style={{ height: 1, flex: 1, background: "black" }}></div>
+        </div>
         <br></br>
         <Link to="/register">
           <Button inverse>הרשם</Button>
