@@ -8,9 +8,9 @@ const Navbar = observer(() => {
   const handleLogout = () => {
     authStore.logout();
   };
-  const navbarClass = authStore.isLogged ? "navbar logged" : "navbar";
+  const navbarClass = authStore.isLogged ? "logged" : "";
   return (
-    <div className={navbarClass}>
+    <div className={`navbar ${navbarClass}`}>
       {authStore.isLogged && (
         <div className="p-2 text-red-500 flex gap-1 items-center" onClick={handleLogout}>
           <i className="fa-regular fa-right-from-bracket"></i>

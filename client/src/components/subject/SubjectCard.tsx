@@ -7,25 +7,32 @@ type subjectCardProps = {
   isNew?: boolean;
 };
 
-const colors = ["#FAAA0E", "#BC2A79", "#2A76BC"];
-
-const getRandomColor = () => {
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  const color = colors[randomIndex];
-  return color;
-};
-
 const SubjectCard = (props: subjectCardProps) => {
   let backgroundColor = localStorage.getItem(props.id);
 
+  const colors = ["#FAAA0E", "#BC2A79", "#2A76BC"];
+
+  const getColorBySubjectId = () => {
+    let sum = 0;
+    for (let i = 0; i < props.id.length; i++) {
+      sum += props.id.charCodeAt(i);
+    }
+    const index = sum % colors.length;
+    return colors[index];
+  };
+
   if (!backgroundColor) {
-    backgroundColor = getRandomColor();
+    backgroundColor = getColorBySubjectId();
     localStorage.setItem(props.id, backgroundColor);
   }
 
   const handleCardClick = () => {
-    props.onClick()
-  }
+    document.documentElement.style.setProperty(
+      "--global-subject-color",
+      backgroundColor
+    );
+    props.onClick();
+  };
 
   return (
     <div
@@ -33,7 +40,7 @@ const SubjectCard = (props: subjectCardProps) => {
       onClick={handleCardClick}
       style={{ backgroundColor }}
     >
-       {props.isNew && <div className="new-badge">חדש</div>}
+      {props.isNew && <div className="new-badge">חדש</div>}
       <div className="subject-card_name">{props.name}</div>
     </div>
   );

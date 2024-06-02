@@ -7,7 +7,7 @@ import Navbar from "./components/navbar/Navbar";
 
 import './App.scss';
 import SubjectPage from "./pages/SubjectPage";
-import useGlobalColor from "./hooks/useGlobalColor";
+import { setGlobalColor } from "./services/themeService";
 import NewExam from "./pages/NewExam";
 import { ApiService } from "./services/api-service";
 import { QuizPage } from "./pages/QuizPage";
@@ -18,8 +18,8 @@ import 'swiper/css';
 
 
 const App = () => {
+  setGlobalColor();
 
-  useGlobalColor();
   return (
     <NiceModal.Provider>
       <Router>

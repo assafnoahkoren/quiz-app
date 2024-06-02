@@ -1,4 +1,4 @@
-const useGlobalColor = () => {
+export const setGlobalColor = () => {
   const subjectId = localStorage.getItem("selectedSubjectId");
 
   const storedColor = subjectId ? localStorage.getItem(subjectId) : null;
@@ -7,5 +7,3 @@ const useGlobalColor = () => {
     storedColor
   );
 };
-
-export default useGlobalColor;

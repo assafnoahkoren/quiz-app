@@ -50,8 +50,6 @@ class DataStore {
     if (!res.data.error) {
       this.subjects = res.data;
     }
-    console.log(this.subjects);
-
   }
 
   setSelectedSubject(subjectId: string) {
