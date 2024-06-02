@@ -29,7 +29,7 @@ const Register = () => {
   };
   return (
     <div className="page-container">
-      <div className="page-wrapper">
+      <div className="page-wraper">
         <br></br>
         <div className="page-header_container">
           <div className="page-header_headline">ברוכים הבאים 👋 </div>
@@ -41,19 +41,7 @@ const Register = () => {
         <Input type="password" placeholder="סיסמא" ref={passwordRef} />
         <Button onClick={registerUser}>הרשם</Button>
         <br></br>
-        <div
-          style={{
-            opacity: 0.2,
-            display: "flex",
-            gap: 6,
-            width: "100%",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ height: 1, flex: 1, background: "black" }}></div>
-          <div>או</div>
-          <div style={{ height: 1, flex: 1, background: "black" }}></div>
-        </div>
+        <div style={{ opacity: 0.2 }}>----------------------------או----------------------------</div>
         <br></br>
 
         <Link to="/login">
