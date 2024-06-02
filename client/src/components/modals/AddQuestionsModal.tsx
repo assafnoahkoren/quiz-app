@@ -12,12 +12,15 @@ export const AddQuestionsModal = () => {
   }
 
   const addQuestions = () => {
-    const cleanedString = value?.replace(/\n/g, '').trim();
-    const doubleQuotedString = cleanedString.replace(/'/g, '"');
-    const quotedPropertyNamesString = doubleQuotedString.replace(/(\w+):/g, '"$1":');
-    const noTrailingCommasString = quotedPropertyNamesString.replace(/,\s*}/g, '}');
-    const questions: QuestionInput[] = JSON.parse(noTrailingCommasString);
-    ApiService.questions.createQuestions(questions);
+    if (!value) return;
+    let questions:QuestionInput[] = [];
+    try {
+      questions = JSON.parse(value);
+      ApiService.questions.createQuestions(questions);
+    } catch (error) {
+      alert(error);
+    }
+    
   }
   return (
     <div onClick={closeModal} className='fixed z-50 left-0 top-0 w-full h-full flex justify-center items-center py-10 px-5 bg-[#00000050]'>
