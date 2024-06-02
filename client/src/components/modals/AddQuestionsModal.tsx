@@ -1,18 +1,31 @@
 import NiceModal from "@ebay/nice-modal-react";
 import Button from "../UIElements/Button";
+import { ApiService } from "../../services/api-service";
+import { useState } from "react";
+import { QuestionInput } from "@shared/types/QuestionInput";
 
 export const AddQuestionsModal = () => {
+  const [value, setValue ] = useState();
   const closeModal = (e: any) => {    
     if (e.currentTarget != e.target) return;
     NiceModal.remove('AddQuestionsModal');
+  }
+
+  const addQuestions = () => {
+    const cleanedString = value?.replace(/\n/g, '').trim();
+    const doubleQuotedString = cleanedString.replace(/'/g, '"');
+    const quotedPropertyNamesString = doubleQuotedString.replace(/(\w+):/g, '"$1":');
+    const noTrailingCommasString = quotedPropertyNamesString.replace(/,\s*}/g, '}');
+    const questions: QuestionInput[] = JSON.parse(noTrailingCommasString);
+    ApiService.questions.createQuestions(questions);
   }
   return (
     <div onClick={closeModal} className='fixed z-50 left-0 top-0 w-full h-full flex justify-center items-center py-10 px-5 bg-[#00000050]'>
       <div className='w-full h-[75%] bg-slate-50 p-4 rounded-xl flex justify-between'>
         <div className='w-full flex-col h-full mb-2 flex justify-center items-center'>
           <h1>הוספת שאלות</h1>
-          <textarea className='w-full h-full border border-black rounded-[5px]' dir='ltr'></textarea>
-        <Button>הוספת שאלות</Button>
+          <textarea onChange={(e) => setValue(e.target.value)} className='w-full h-full border border-black rounded-[5px]' dir='ltr'></textarea>
+        <Button onClick={addQuestions}>הוספת שאלות</Button>
         </div>
         <i className='fa-regular fa-times opacity-50' onClick={closeModal}></i>
       </div>

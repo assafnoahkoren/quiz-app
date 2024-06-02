@@ -66,6 +66,23 @@ questions.post("/update", async (req: UpdateQuestionReq, res) => {
   res.json(result);
 });
 
+type CreateQuestionsReq = Request<
+  {},
+  {},
+  { questions: Prisma.QuestionCreateManyInput }
+>;
+questions.post("/create", async (req: CreateQuestionsReq, res) => {
+  if (!req.currentUserRoles?.includes("admin")) {
+    return res.status(403).json({ error: "Unauthorized" });
+  }
+  const { questions } = req.body;
+  if (!questions) {
+    return res.status(400).json({ error: "no questions" });
+  }
+  const result = await db.question.createMany({ data: questions })
+  res.send(result);
+});
+
 
 type CreateAnserReq = Request<
   {},
