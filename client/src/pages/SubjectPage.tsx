@@ -1,15 +1,14 @@
 import { observer } from "mobx-react-lite";
 import { dataStore } from "../stores/DataStore";
-import SubjectOption from "../components/subject/SubjectOption";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import SubjectOption from "../components/UIElements/SubjectOption";
 
 import "./SubjectPage.scss";
 import Button from "../components/UIElements/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/UIElements/Loading";
 import { quizStore } from "../stores/QuizStore";
-
-import "./SubjectPage.scss";
+import { SubjectType } from "../types/subjectType";
 
 const SubjectPage = observer(() => {
   const navigate = useNavigate()

@@ -38,25 +38,11 @@ class DataStore {
     }
   }
 
-  async getSubjectsByFilter(filter: string) {
-    this.subjectsLoading = true;
-    console.log(filter);
-    const res = await axios.get(`/api/subjects`, {
-      params: {
-        name: filter
-      }
-    });
-    this.subjectsLoading = false;
-    if (!res.data.error) {
-      this.subjects = res.data;
-    }
-    console.log(this.subjects);
-
-  }
-
   setSelectedSubject(subjectId: string) {
     this.selectedSubjectId = subjectId;
-    localStorage.setItem('selectedSubjectId', subjectId);
+    if (!this.subjectsMap[subjectId]) {
+      this.subjectsMap[subjectId] = { isLoading: false, subject: null };
+    }
   }
 
   async getSubjectById(subjectId: string) {

@@ -2,7 +2,6 @@ import "./SubjectCard.scss";
 
 type subjectCardProps = {
   name: string;
-  id: string;
   onClick: () => void;
   isNew?: boolean;
 };
@@ -16,11 +15,11 @@ const getRandomColor = () => {
 };
 
 const SubjectCard = (props: subjectCardProps) => {
-  let backgroundColor = localStorage.getItem(props.id);
+  let backgroundColor = localStorage.getItem(props.name);
 
   if (!backgroundColor) {
     backgroundColor = getRandomColor();
-    localStorage.setItem(props.id, backgroundColor);
+    localStorage.setItem(props.name, backgroundColor);
   }
 
   const handleCardClick = () => {
