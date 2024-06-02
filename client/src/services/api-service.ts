@@ -126,7 +126,7 @@ export const ApiService = {
 
     createQuestions: async (questions: QuestionInput[]) => {
       type ResponseType = {
-        id: string;
+        count: number;
       };
       console.log(questions);
       const res = await axios.post<ResponseType>(

@@ -11,13 +11,17 @@ export const AddQuestionsModal = () => {
     NiceModal.remove('AddQuestionsModal');
   }
 
-  const addQuestions = () => {
+  const addQuestions = async () => {
     if (!value) return;
     let questions:QuestionInput[] = [];
     try {
       questions = JSON.parse(value);
-      ApiService.questions.createQuestions(questions);
+      const res = await ApiService.questions.createQuestions(questions);
       NiceModal.remove('AddQuestionsModal');
+      setTimeout(() => {
+        alert(`${res.count} שאלות נוספו בהצלחה`);
+      }, 200);
+      
     } catch (error) {
       alert(error);
     }
