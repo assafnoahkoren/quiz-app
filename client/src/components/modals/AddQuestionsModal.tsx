@@ -17,6 +17,7 @@ export const AddQuestionsModal = () => {
     try {
       questions = JSON.parse(value);
       ApiService.questions.createQuestions(questions);
+      NiceModal.remove('AddQuestionsModal');
     } catch (error) {
       alert(error);
     }
