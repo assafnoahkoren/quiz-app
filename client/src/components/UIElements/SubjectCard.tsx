@@ -2,13 +2,12 @@ import "./SubjectCard.scss";
 
 type subjectCardProps = {
   name: string;
-  id: string;
   onClick: () => void;
   isNew?: boolean;
 };
 
 const SubjectCard = (props: subjectCardProps) => {
-  let backgroundColor = localStorage.getItem(props.id);
+  let backgroundColor = localStorage.getItem(props.name);
 
   const colors = ["#FAAA0E", "#BC2A79", "#2A76BC"];
 

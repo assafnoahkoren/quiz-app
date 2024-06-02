@@ -54,7 +54,9 @@ class DataStore {
 
   setSelectedSubject(subjectId: string) {
     this.selectedSubjectId = subjectId;
-    localStorage.setItem('selectedSubjectId', subjectId);
+    if (!this.subjectsMap[subjectId]) {
+      this.subjectsMap[subjectId] = { isLoading: false, subject: null };
+    }
   }
 
   async getSubjectById(subjectId: string) {
