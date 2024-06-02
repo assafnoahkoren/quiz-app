@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-.page-wraper {
+.page-wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@
     display: flex;
     flex-direction: column;
     justify-content: baseline;
-    align-self: baseline;
+    width: 270px;
 }
 
 .page-header_headline {

@@ -123,6 +123,20 @@ export const ApiService = {
       );
       return res.data;
     },
+
+    createQuestions: async (questions: QuestionInput[]) => {
+      type ResponseType = {
+        count: number;
+      };
+      console.log(questions);
+      const res = await axios.post<ResponseType>(
+        `/api/v1/questions/create`,
+        {
+          questions: questions,
+        }
+      );
+      return res.data;
+    },
     
   },
 };

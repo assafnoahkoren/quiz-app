@@ -1,5 +1,5 @@
 import NiceModal from '@ebay/nice-modal-react';
-import { quizStore } from '../stores/QuizStore';
+import { quizStore } from '../../stores/QuizStore';
 import { observer } from 'mobx-react-lite';
 import { BarLoader } from 'react-spinners';
 

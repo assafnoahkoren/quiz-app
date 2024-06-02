@@ -10,7 +10,11 @@ export default {
     {pattern: /border-./},
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-purple': '#BC2A79',
+      },
+    },
   },
   plugins: [],
 }
