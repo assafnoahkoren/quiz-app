@@ -16,6 +16,7 @@ import './components/modals/QuestionEditModal'
 import './components/modals/AddQuestionsModal'
 import 'swiper/css';
 import { ThemeLayer } from "./theme";
+import { Sidebar } from "./components/Sidebar";
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
       <NiceModal.Provider>
         <Router>
           <Navbar />
+          <Sidebar/>
           <div className="main-container">
             <Routes>
               <Route path="/login" element={<Login />} />

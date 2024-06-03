@@ -43,7 +43,7 @@ const SubjectPage = observer(() => {
   return (
     <>
       {selectedSubject?.isLoading && <Loading></Loading>}
-      {selectedSubject?.subject && <div className="page-wrapper mt-4 px-4">
+      {selectedSubject?.subject && <div className="page-wrapper px-4">
         <div className="subject-page_header">
           <div className="subject-page_header-top mb-2">
             <h3 className="main-subject-title">

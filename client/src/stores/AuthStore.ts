@@ -1,5 +1,5 @@
 import axios from "axios";
-import { autorun, makeAutoObservable, runInAction } from "mobx";
+import { action, autorun, makeAutoObservable, runInAction } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import {JWTPayload} from "@shared/types/JWTPayload.ts";
 
@@ -14,7 +14,7 @@ class AuthStore {
     makeAutoObservable(this);
     makePersistable(this, {
       name: "AuthStore",
-      properties: ["jwt", "isLogged"],
+      properties: ["jwt", "isLogged", "user"],
       storage: window.localStorage,
     });
   }
@@ -47,8 +47,9 @@ class AuthStore {
     });
   }
 
+  
   logout() {
-    runInAction(() => {
+    runInAction(() => {      
       this.jwt = "";
       this.user = undefined;
       this.isLogged = false;
