@@ -38,7 +38,7 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
               <div className="subject-option_left">
               </div>
             </div>
-            <div className="subject-option_expand flex items-center justify-center rounded-e-lg bg-[--global-subject-color] h-[--height-button] px-2 gap-2 text-white" onClick={hideOrShow}>
+            <div className="subject-option_expand flex items-center justify-center rounded-e-lg bg-[--global-subject-color] h-[--height-button] px-2 gap-2 text-white h-full" onClick={hideOrShow}>
               <div className="subject-option_subjcount">
                 {subjects.length} תתי נושאים{" "}
               </div>
@@ -49,9 +49,9 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
             return (
               <div
                 onClick={() => onClickSubject([curSubject.id])}
-                className={`SubSubjectOption w-full border-2 border-[--global-subject-color] p-2 mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
+                className={`SubSubjectOption w-full border-solid border-2 border-[--global-subject-color] mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
               >
-                <div className="subject-option_name flex justify-between w-full gap-2">
+                <div className="subject-option_name flex justify-between w-full gap-2 p-2">
                   <div className="truncate">
                     {curSubject.name}
                   </div>

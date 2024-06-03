@@ -1,30 +1,19 @@
-import { Link } from "react-router-dom";
-import Button from "../UIElements/Button";
 import "./Navbar.scss";
 import { authStore } from "../../stores/AuthStore";
 import { observer } from "mobx-react-lite";
-import NiceModal from "@ebay/nice-modal-react";
+import { uiStore } from "../../stores/UIStore";
 
 const Navbar = observer(() => {
-  const handleLogout = () => {
-    authStore.logout();
-  };
+
   const navbarClass = authStore.isLogged ? "logged" : "";
   return (
     <div className={`navbar ${navbarClass}`}>
+      <div className="navbar-logo flex-1">קוויז</div>
       {authStore.isLogged && (
-        <div
-          className="p-2 text-red-500 flex gap-1 items-center"
-          onClick={handleLogout}
-        >
-          <i className="fa-regular fa-right-from-bracket"></i>
-          <span>התנתק</span>
+        <div onClick={() => uiStore.menuOpen = !uiStore.menuOpen}>
+          <i className="fas fa-bars text-blue-5 p-3 me-2"></i>
         </div>
       )}
-      {authStore.hasRole("admin") && <Button inverse onClick={() => NiceModal.show("AddQuestionsModal")}>הוספת שאלות</Button>}
-      <Link to="/home">
-        <div className="navbar-logo">קוויז</div>
-      </Link>
     </div>
   );
 });

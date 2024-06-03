@@ -112,7 +112,7 @@ export const QuizPage = observer(() => {
         <div className="p-4 flex flex-col gap-2">
           {quizStore.currentQuestion?.answers?.map((answer) => (
             <div
-              className={`answer-button p-3 border-2 border-${quizStore.answerColor(answer)}-500 rounded-lg
+              className={`answer-button p-3 border-solid border-2 border-${quizStore.answerColor(answer)}-500 rounded-lg
             ${quizStore.selectedAnswer === answer || quizStore.currectQuestionState ? `answer-button-selected bg-${quizStore.answerColor(answer)}-200` : ""}
             ${quizStore.selectedAnswer === answer ? 'font-black' : ''}`}
               onClick={() => quizStore.selectAnswer(answer)}
