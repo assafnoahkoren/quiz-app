@@ -12,6 +12,7 @@ const SubjectCard = (props: subjectCardProps) => {
   const colors = ["#FAAA0E", "#BC2A79", "#2A76BC"];
 
   const getColorBySubjectId = () => {
+    if (!props?.id) return '#2578F4';
     let sum = 0;
     for (let i = 0; i < props.id.length; i++) {
       sum += props.id.charCodeAt(i);
