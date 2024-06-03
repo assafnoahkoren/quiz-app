@@ -101,7 +101,6 @@ class QuizStore {
 
   async saveQuestion(question: QuestionInput) {
     this.saveLoading = true;
-    question.verified = true;
     await ApiService.questions.updateQuestion(question);
     this.saveLoading = false;
   }
