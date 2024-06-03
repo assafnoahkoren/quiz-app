@@ -15,27 +15,30 @@ ApiService
 import './components/modals/QuestionEditModal'
 import './components/modals/AddQuestionsModal'
 import 'swiper/css';
+import { ThemeLayer } from "./theme";
 
 
 const App = () => {
   setGlobalColor();
 
   return (
-    <NiceModal.Provider>
-      <Router>
-        <Navbar />
-        <div className="main-container">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/quiz" element={<QuizPage />} />
-            <Route path='/subjectPage/:subjectId' element={<SubjectPage />} />
-            <Route path="*" element={<Login />} />
-          </Routes>
-        </div>
-      </Router>
-    </NiceModal.Provider>
+    <ThemeLayer>
+      <NiceModal.Provider>
+        <Router>
+          <Navbar />
+          <div className="main-container">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/quiz" element={<QuizPage />} />
+              <Route path='/subjectPage/:subjectId' element={<SubjectPage />} />
+              <Route path="*" element={<Login />} />
+            </Routes>
+          </div>
+        </Router>
+      </NiceModal.Provider>
+    </ThemeLayer>
   );
 };
 
