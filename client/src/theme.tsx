@@ -6,6 +6,11 @@ import { ThemeProvider, createTheme } from '@mui/material';
 
 export const theme = createTheme({
   direction: 'rtl',
+  palette: {
+    primary: {
+      main: '#2578F4',
+    }
+  }
 });
 
 

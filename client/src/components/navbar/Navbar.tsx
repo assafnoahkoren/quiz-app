@@ -7,11 +7,11 @@ const Navbar = observer(() => {
 
   const navbarClass = authStore.isLogged ? "logged" : "";
   return (
-    <div className={`navbar ${navbarClass}`}>
+    <div className={`navbar ${navbarClass} p-2`}>
       <div className="navbar-logo flex-1">קוויז</div>
       {authStore.isLogged && (
         <div onClick={() => uiStore.menuOpen = !uiStore.menuOpen}>
-          <i className="fas fa-bars text-blue-5 p-3 me-2"></i>
+          <i className="fas fa-bars text-blue-5 p-3"></i>
         </div>
       )}
     </div>

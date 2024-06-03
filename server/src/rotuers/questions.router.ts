@@ -13,20 +13,18 @@ type GetRandomBySubjectReq = Request<
 questions.post(
   "/get-random-by-subjects",
   async (req: GetRandomBySubjectReq, res) => {
+    const extraWhere: any = {};
+    if (!req.currentUserRoles?.includes("admin")) {
+      extraWhere.verified = true;
+    }
     const { subjectIds, config, amount } = req.body;
-    const questionsCount = await db.question.count({
-      where: {
-        subjectId: {
-          in: subjectIds,
-        },
-      },
-    });
 
     const questions = await db.question.findMany({
       where: {
         subjectId: {
           in: subjectIds,
         },
+        ...extraWhere
       },
       select: {
         answers: true,

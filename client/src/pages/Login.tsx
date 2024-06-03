@@ -15,7 +15,7 @@ const Login = observer(() => {
     try {
       console.log(emailRef.current!.value, passwordRef.current!.value);
       await authStore.login(
-        emailRef.current!.value,
+        emailRef.current!.value?.toLowerCase(),
         passwordRef.current!.value
       );
       navigate("/home");
@@ -33,19 +33,21 @@ const Login = observer(() => {
           <div className="page-header_subheadline">התחברו לחשבון שלכם</div>
         </div>
         <br></br>
+        <div className="flex flex-col items-center">
         <Input placeholder="אימייל" type="text" ref={emailRef} />
         <Input placeholder="סיסמא" type="password" ref={passwordRef} />
-        <Button variant="contained" onClick={authUser}>
-          <div className="flex justify-center w-full">
+        <Button variant="contained" color="primary" onClick={authUser} disableElevation>
+          <div className="flex justify-center items-center w-20 h-8">
               {authStore.loading ? <BarLoader color="white" /> : 'התחבר'}
             </div> 
         </Button>
-        <br></br>
+        </div>
+        {/* <br></br>
         <div style={{ opacity: 0.2 }}>או</div>
         <br></br>
         <Link to="/register">
           <Button>הרשם</Button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
