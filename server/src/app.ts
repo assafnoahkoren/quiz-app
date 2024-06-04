@@ -111,6 +111,7 @@ app.get("/api/subjects", async (req, res) => {
 //get subject by specific id
 app.get("/api/subjects/:subjectId", async (req, res) => {
   const { subjectId } = req.params;
+  const { filterQuestionsByVisibility } = req.query
 
   const subject = await db.subject.findUnique({
     where: {
@@ -119,22 +120,32 @@ app.get("/api/subjects/:subjectId", async (req, res) => {
     include: {
       _count: {
         select: {
-          Questions: true,
-        },
+          Questions: {
+            where: {
+              verified: filterQuestionsByVisibility === 'true'
+            }
+          },        },
       },
       Subjects: {
         include: {
           _count: {
             select: {
-              Questions: true,
+              Questions: {
+                where: {
+                  verified: filterQuestionsByVisibility === 'true'
+                }
+              },
             },
           },
           Subjects: {
             include: {
               _count: {
                 select: {
-                  Questions: true,
-                },
+                  Questions: {
+                    where: {
+                      verified: filterQuestionsByVisibility === 'true'
+                    }
+                  },                },
               },
               Subjects: true,
             },

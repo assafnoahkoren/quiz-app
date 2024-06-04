@@ -37,6 +37,7 @@ class QuizStore {
     const questions = await ApiService.questions.getRandomBySubjects(
       subjectIds
     );
+    this.questions.forEach(question => question.answers = shuffleArray(question.answers || []))
     this.questions = shuffleArray(questions);
   }
 

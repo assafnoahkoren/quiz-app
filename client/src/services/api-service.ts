@@ -2,6 +2,7 @@ import axios from "axios";
 import { QuizConfig } from "@shared/types/QuizConfig.ts";
 import { QuizQuestionAnswerInput } from "@shared/types/QuizQuestionAnswerInput.ts";
 import { QuestionInput } from "@shared/types/QuestionInput.ts";
+import {dataStore} from "../stores/DataStore.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -75,7 +76,8 @@ export const ApiService = {
         subjectId: string;
         verified: boolean;
       }>;
-      const res = await axios.post<ResponseType>(`/api/v1/questions/get-random-by-subjects`, {
+      const filter = dataStore.filterQuestionsByVisibility ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}` : '';
+      const res = await axios.post<ResponseType>(`/api/v1/questions/get-random-by-subjects?${filter}`, {
         subjectIds,
         amount,
         config,
