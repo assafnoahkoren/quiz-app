@@ -76,7 +76,7 @@ export const ApiService = {
         subjectId: string;
         verified: boolean;
       }>;
-      const filter = dataStore.filterQuestionsByVisibility ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}` : '';
+      const filter = dataStore.filterQuestionsByVisibility !== undefined ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}` : '';
       const res = await axios.post<ResponseType>(`/api/v1/questions/get-random-by-subjects?${filter}`, {
         subjectIds,
         amount,

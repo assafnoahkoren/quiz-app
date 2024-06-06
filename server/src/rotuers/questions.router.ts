@@ -13,13 +13,17 @@ type GetRandomBySubjectReq = Request<
 questions.post(
   "/get-random-by-subjects",
   async (req: GetRandomBySubjectReq, res) => {
-    const extraWhere: any = {};
-    if (!req.currentUserRoles?.includes("admin")) {
-      extraWhere.verified = true;
-    }
     const { subjectIds, config, amount } = req.body;
     const { filterQuestionsByVisibility } = req.query
+
+    const extraWhere: any = {};
     const verified = filterQuestionsByVisibility === 'true';
+    if (req.currentUserRoles?.includes("admin")) {
+      extraWhere.verified = verified;
+    } else {
+      extraWhere.verified = true;
+    }
+    
     const questions = await db.question.findMany({
       where: {
         subjectId: {
@@ -33,7 +37,7 @@ questions.post(
         id: true,
         correctAnswer: true,
         subjectId: true,
-        verified: verified,
+        verified: true,
       },
     });
 
