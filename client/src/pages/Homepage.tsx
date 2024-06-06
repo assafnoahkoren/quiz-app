@@ -17,7 +17,6 @@ const HomePage = observer(() => {
   }, []);
 
   const subjectClicked = (subjectId: string) => {
-    dataStore.setSelectedSubject(subjectId);
     navigate(`/subjectPage/${subjectId}`);
   };
 

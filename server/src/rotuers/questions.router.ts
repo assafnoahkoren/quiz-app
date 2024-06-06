@@ -18,7 +18,8 @@ questions.post(
       extraWhere.verified = true;
     }
     const { subjectIds, config, amount } = req.body;
-
+    const { filterQuestionsByVisibility } = req.query
+    const verified = filterQuestionsByVisibility === 'true';
     const questions = await db.question.findMany({
       where: {
         subjectId: {
@@ -32,7 +33,7 @@ questions.post(
         id: true,
         correctAnswer: true,
         subjectId: true,
-        verified: true,
+        verified: verified,
       },
     });
 

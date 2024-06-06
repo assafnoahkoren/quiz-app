@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import {action, autorun, makeObservable, observable} from "mobx";
 import axios from "axios";
 import { SubjectType } from "../types/subjectType";
 import { makePersistable } from "mobx-persist-store";
@@ -8,20 +8,40 @@ class DataStore {
   selectedSubjectId = "";
   subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
   subjectById: Record<string, SubjectType> = {};
-  
+  filterQuestionsByVisibility?: boolean;
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this, {
+      subjects: observable,
+      subjectsLoading: observable,
+      selectedSubjectId: observable,
+      subjectsMap: observable,
+      subjectById: observable,
+      filterQuestionsByVisibility: observable,
+      getSubjects: action,
+      getSubjectsByFilter: action,
+      setSelectedSubject: action,
+      getSubjectById: action,
+      
+    })
     makePersistable(this, {
       name: "DataStore",
       properties: [
-        "subjects",
-        "selectedSubjectId",
         "subjectsMap",
         "subjectById",
+        "filterQuestionsByVisibility"
       ],
       storage: window.localStorage,
     });
+
+    autorun(() => {
+      const subjectId = this.selectedSubjectId
+      this.filterQuestionsByVisibility
+      console.log(subjectId, 'subjectId')
+      if (subjectId) {
+        this.getSubjectById(subjectId)
+      }
+    })
   }
 
   get flatSubjects() {
@@ -31,7 +51,8 @@ class DataStore {
   async getSubjects() {
     this.subjectsLoading = true;
 
-    const res = await axios.get("/api/subjects");
+    const res =
+        await axios.get(`/api/subjects`);
     this.subjectsLoading = false;
     if (!res.data.error) {
       this.subjects = res.data;
@@ -54,16 +75,14 @@ class DataStore {
 
   setSelectedSubject(subjectId: string) {
     this.selectedSubjectId = subjectId;
-    if (!this.subjectsMap[subjectId]) {
-      this.subjectsMap[subjectId] = { isLoading: false, subject: null };
-    }
+
   }
 
   async getSubjectById(subjectId: string) {
-    if (this.subjectsMap[subjectId]?.subject) return;
     this.subjectsMap[subjectId] = {}
     this.subjectsMap[subjectId].isLoading = true;
-    const res = await axios.get(`/api/subjects/${subjectId}`);
+    const filter = dataStore.filterQuestionsByVisibility ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}` : '';
+    const res = await axios.get(`/api/subjects/${subjectId}?${filter}`);
     if (res.data) {
       this.subjectsMap[subjectId].subject = res.data;
     }

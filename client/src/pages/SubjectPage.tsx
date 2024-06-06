@@ -17,16 +17,8 @@ const SubjectPage = observer(() => {
   // const backgroundColor = useRef<string | null>(null);
 
   useEffect(() => {
-    const fetchSubject = async () => {
       if (!subjectId) return;
-      await dataStore.getSubjectById(subjectId);
       dataStore.setSelectedSubject(subjectId);
-      // setSelectedSubject(
-      //   dataStore.subjectsMap[subjectId].subject
-      // );
-
-    };
-    fetchSubject();
   }, [subjectId]);
 
 
