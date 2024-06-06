@@ -19,6 +19,7 @@ const SubjectPage = observer(() => {
   useEffect(() => {
       if (!subjectId) return;
       dataStore.setSelectedSubject(subjectId);
+      dataStore.getMyStats();
   }, [subjectId]);
 
 

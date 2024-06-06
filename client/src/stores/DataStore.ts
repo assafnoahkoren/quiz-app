@@ -2,6 +2,8 @@ import {action, autorun, makeObservable, observable} from "mobx";
 import axios from "axios";
 import { SubjectType } from "../types/subjectType";
 import { makePersistable } from "mobx-persist-store";
+import { ApiService } from "../services/api-service";
+import { SubjectStats } from "@shared/types/SubjectStats";
 class DataStore {
   subjects = [];
   subjectsLoading = false;
@@ -9,6 +11,8 @@ class DataStore {
   subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
   subjectById: Record<string, SubjectType> = {};
   filterQuestionsByVisibility?: boolean;
+  statsBySubjectId: Record<string, SubjectStats> = {};
+
 
   constructor() {
     makeObservable(this, {
@@ -18,6 +22,7 @@ class DataStore {
       subjectsMap: observable,
       subjectById: observable,
       filterQuestionsByVisibility: observable,
+      statsBySubjectId: observable,
       getSubjects: action,
       getSubjectsByFilter: action,
       setSelectedSubject: action,
@@ -44,6 +49,9 @@ class DataStore {
     })
   }
 
+  async getMyStats() {
+    this.statsBySubjectId = await ApiService.questions.getMySubjectStats();
+  }
   get flatSubjects() {
     return flattenSubjects(this.subjects);
   }

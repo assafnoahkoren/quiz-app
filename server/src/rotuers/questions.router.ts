@@ -45,6 +45,64 @@ questions.post(
   }
 );
 
+type MySubjectStatsReq = Request<
+  {},
+  {},
+  { subjectIds: string[]; }
+>;
+questions.post(
+  "/my-subject-stats",
+  async (req: MySubjectStatsReq, res) => {
+    const { subjectIds } = req.body;
+    const userId = req.currentUserId;
+    const subjectsTotal = await db.question.groupBy({
+      by: 'subjectId',
+      where: {
+        // subjectId: {
+        //   in: subjectIds
+        // },
+        verified: true
+      },
+      _count: true
+    });
+    
+    const answers = await db.quizQuestionAnswer.groupBy({
+      by: ['questionId', 'subjectId', 'isCorrect'],
+      where: {
+        userId,
+        // subjectId: {
+        //   in: subjectIds
+        // }
+      },
+      _count: true,
+    })
+
+    // Count the number of Questions answered correctly, incorrectly, and unanswered
+    const statsBySubjectId = {};
+    for (const subject of subjectsTotal) {
+      statsBySubjectId[subject.subjectId] = {
+        total: subject._count,
+        correct: 0,
+        incorrect: 0,
+        unanswered: 0,
+      }
+      for (const answer of answers) {
+        if (answer.subjectId === subject.subjectId) {
+          if (answer.isCorrect) {
+            statsBySubjectId[subject.subjectId].correct += 1;
+          } else {
+            statsBySubjectId[subject.subjectId].incorrect += 1;
+          }
+        }
+      }
+      statsBySubjectId[subject.subjectId].unanswered = statsBySubjectId[subject.subjectId].total - statsBySubjectId[subject.subjectId].correct - statsBySubjectId[subject.subjectId].incorrect
+      
+    }
+
+    res.json(statsBySubjectId);
+  }
+);
+
 type UpdateQuestionReq = Request<
   {},
   {},

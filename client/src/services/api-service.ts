@@ -2,7 +2,8 @@ import axios from "axios";
 import { QuizConfig } from "@shared/types/QuizConfig.ts";
 import { QuizQuestionAnswerInput } from "@shared/types/QuizQuestionAnswerInput.ts";
 import { QuestionInput } from "@shared/types/QuestionInput.ts";
-import {dataStore} from "../stores/DataStore.ts";
+import { dataStore } from "../stores/DataStore.ts";
+import { SubjectStats } from "@shared/types/SubjectStats.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -76,12 +77,26 @@ export const ApiService = {
         subjectId: string;
         verified: boolean;
       }>;
-      const filter = dataStore.filterQuestionsByVisibility !== undefined ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}` : '';
-      const res = await axios.post<ResponseType>(`/api/v1/questions/get-random-by-subjects?${filter}`, {
-        subjectIds,
-        amount,
-        config,
-      });
+      const filter =
+        dataStore.filterQuestionsByVisibility !== undefined
+          ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}`
+          : "";
+      const res = await axios.post<ResponseType>(
+        `/api/v1/questions/get-random-by-subjects?${filter}`,
+        {
+          subjectIds,
+          amount,
+          config,
+        }
+      );
+      return res.data;
+    },
+
+    getMySubjectStats: async () => {
+      type ResponseType = Record<string, SubjectStats>;
+      const res = await axios.post<ResponseType>(
+        `/api/v1/questions/my-subject-stats`
+      );
       return res.data;
     },
 
@@ -112,17 +127,13 @@ export const ApiService = {
       return res.data;
     },
 
-    
     updateQuestion: async (question: QuestionInput) => {
       type ResponseType = {
         id: string;
       };
-      const res = await axios.post<ResponseType>(
-        `/api/v1/questions/update`,
-        {
-          question: question,
-        }
-      );
+      const res = await axios.post<ResponseType>(`/api/v1/questions/update`, {
+        question: question,
+      });
       return res.data;
     },
 
@@ -131,14 +142,10 @@ export const ApiService = {
         count: number;
       };
       console.log(questions);
-      const res = await axios.post<ResponseType>(
-        `/api/v1/questions/create`,
-        {
-          questions: questions,
-        }
-      );
+      const res = await axios.post<ResponseType>(`/api/v1/questions/create`, {
+        questions: questions,
+      });
       return res.data;
     },
-    
   },
 };

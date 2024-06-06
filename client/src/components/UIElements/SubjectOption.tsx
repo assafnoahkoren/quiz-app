@@ -3,6 +3,7 @@ import "./SubjectOption.scss";
 import { SubjectType } from "../../types/subjectType";
 import { useNavigate } from "react-router-dom";
 import { quizStore } from "../../stores/QuizStore";
+import { dataStore } from "../../stores/DataStore";
 
 interface SubjectOptionProps {
   name: string;
@@ -47,6 +48,7 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
           </div>
           {subjects.map((curSubject) => {
             return (
+              <>
               <div
                 onClick={() => onClickSubject([curSubject.id])}
                 className={`SubSubjectOption w-full border-solid border-2 border-[--global-subject-color] mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
@@ -63,8 +65,35 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
                     </span>
                   </div>
                 </div>
-
               </div>
+              {!isHidden && <div
+                className={`w-full flex justify-center gap-10 -mt-1`}
+
+              >
+                <div className="bg-slate-200 rounded flex justify-evenly items-center px-2 gap-2">
+                  <i className="fas fa-question opacity-50 text-black relative -top-[1px] "></i>
+                  <span className="">
+                  {dataStore.statsBySubjectId[curSubject.id].unanswered}
+                  </span>
+                </div>
+
+                <div className="bg-lime-200 rounded flex justify-evenly items-center px-2 gap-2">
+                  <i className="fas fa-check text-lime-500 relative -top-[1px] "></i>
+                  <span className="">
+                  {dataStore.statsBySubjectId[curSubject.id].correct}
+                  </span>
+                </div>
+
+                
+                <div className="bg-red-200 rounded flex justify-evenly items-center px-2 gap-2">
+                  <i className="fas fa-times text-red-400 relative -top-[1px] "></i>
+                  <span className="">
+                  {dataStore.statsBySubjectId[curSubject.id].incorrect}
+                  </span>
+                </div>
+
+              </div>}
+              </>
             );
           })}
         </>
