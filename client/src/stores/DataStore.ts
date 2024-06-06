@@ -1,21 +1,19 @@
-import {autorun, makeAutoObservable} from "mobx";
+import {autorun, observable} from "mobx";
 import axios from "axios";
 import { SubjectType } from "../types/subjectType";
 import { makePersistable } from "mobx-persist-store";
 class DataStore {
-  subjects = [];
-  subjectsLoading = false;
-  selectedSubjectId = "";
-  subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
-  subjectById: Record<string, SubjectType> = {};
-  filterQuestionsByVisibility?: boolean;
+  @observable subjects = [];
+  @observable subjectsLoading = false;
+  @observable selectedSubjectId = "";
+  @observable subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
+  @observable subjectById: Record<string, SubjectType> = {};
+  @observable filterQuestionsByVisibility?: boolean;
 
   constructor() {
-    makeAutoObservable(this);
     makePersistable(this, {
       name: "DataStore",
       properties: [
-        "selectedSubjectId",
         "subjectsMap",
         "subjectById",
         "filterQuestionsByVisibility"
@@ -27,12 +25,12 @@ class DataStore {
       const subjectId = this.selectedSubjectId
       console.log(subjectId, 'subjectId')
       if (subjectId) {
-        this.getSubjects()
+        this.getSubjectById(subjectId)
       }
     })
   }
 
-  get flatSubjects() {
+  @observable get flatSubjects() {
     return flattenSubjects(this.subjects);
   }
 
@@ -63,13 +61,10 @@ class DataStore {
 
   setSelectedSubject(subjectId: string) {
     this.selectedSubjectId = subjectId;
-    if (!this.subjectsMap[subjectId]) {
-      this.subjectsMap[subjectId] = { isLoading: false, subject: null };
-    }
+
   }
 
   async getSubjectById(subjectId: string) {
-    if (this.subjectsMap[subjectId]?.subject) return;
     this.subjectsMap[subjectId] = {}
     this.subjectsMap[subjectId].isLoading = true;
     const filter = dataStore.filterQuestionsByVisibility ? `filterQuestionsByVisibility=${dataStore.filterQuestionsByVisibility}` : '';
