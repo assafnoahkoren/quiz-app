@@ -1,16 +1,29 @@
-import {autorun, observable} from "mobx";
+import {action, autorun, makeObservable, observable} from "mobx";
 import axios from "axios";
 import { SubjectType } from "../types/subjectType";
 import { makePersistable } from "mobx-persist-store";
 class DataStore {
-  @observable subjects = [];
-  @observable subjectsLoading = false;
-  @observable selectedSubjectId = "";
-  @observable subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
-  @observable subjectById: Record<string, SubjectType> = {};
-  @observable filterQuestionsByVisibility?: boolean;
+  subjects = [];
+  subjectsLoading = false;
+  selectedSubjectId = "";
+  subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
+  subjectById: Record<string, SubjectType> = {};
+  filterQuestionsByVisibility?: boolean;
 
   constructor() {
+    makeObservable(this, {
+      subjects: observable,
+      subjectsLoading: observable,
+      selectedSubjectId: observable,
+      subjectsMap: observable,
+      subjectById: observable,
+      filterQuestionsByVisibility: observable,
+      getSubjects: action,
+      getSubjectsByFilter: action,
+      setSelectedSubject: action,
+      getSubjectById: action,
+      
+    })
     makePersistable(this, {
       name: "DataStore",
       properties: [
@@ -23,6 +36,7 @@ class DataStore {
 
     autorun(() => {
       const subjectId = this.selectedSubjectId
+      this.filterQuestionsByVisibility
       console.log(subjectId, 'subjectId')
       if (subjectId) {
         this.getSubjectById(subjectId)
@@ -30,7 +44,7 @@ class DataStore {
     })
   }
 
-  @observable get flatSubjects() {
+  get flatSubjects() {
     return flattenSubjects(this.subjects);
   }
 
