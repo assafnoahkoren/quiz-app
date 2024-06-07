@@ -52,7 +52,7 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
               <>
                 <div
                   onClick={() => onClickSubject([curSubject.id])}
-                  className={`SubSubjectOption w-full border-solid border-2 border-[--global-subject-color] mt-2 rounded-lg ${isHidden ? "hidden" : ""}`}
+                  className={`SubSubjectOption w-full border-solid border-2 border-[--global-subject-color] rounded-lg ${isHidden ? "hidden" : ""}`}
                 >
                   <div className="subject-option_name flex justify-between w-full gap-2 p-2">
                     <div className="truncate">
