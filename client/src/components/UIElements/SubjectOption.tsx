@@ -67,8 +67,8 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
                     </div>
                   </div>
                   <ScoresChart
-                    firstNum={dataStore.statsBySubjectId[curSubject.id].incorrect}
-                    secondNum={dataStore.statsBySubjectId[curSubject.id].correct}
+                    firstNum={dataStore.statsBySubjectId[curSubject.id].correct}
+                    secondNum={dataStore.statsBySubjectId[curSubject.id].incorrect}
                     thirdNum={dataStore.statsBySubjectId[curSubject.id].unanswered}
                     total={dataStore.statsBySubjectId[curSubject.id].total} />
                 </div>
