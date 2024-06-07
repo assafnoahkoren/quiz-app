@@ -72,13 +72,6 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
                     thirdNum={dataStore.statsBySubjectId[curSubject.id].unanswered}
                     total={dataStore.statsBySubjectId[curSubject.id].total} />
                 </div>
-                {!isHidden && <div
-                  className={`w-full flex justify-center gap-10 -mt-1`}
-
-                >
-                  
-
-                </div>}
               </>
             );
           })}
