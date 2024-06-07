@@ -2,6 +2,7 @@ import express, { Request } from "express";
 import { db } from "../db";
 import { QuizConfig } from "@shared/types/QuizConfig";
 import { Prisma } from "@prisma/client";
+import _ from 'lodash';
 
 export const questions = express.Router();
 
@@ -52,7 +53,7 @@ type MySubjectStatsReq = Request<
 >;
 questions.post(
   "/my-subject-stats",
-  async (req: MySubjectStatsReq, res) => {
+  async (req: MySubjectStatsReq, res) => {    
     const { subjectIds } = req.body;
     const userId = req.currentUserId;
     const subjectsTotal = await db.question.groupBy({
@@ -64,7 +65,7 @@ questions.post(
         verified: true
       },
       _count: true
-    });
+    });    
     
     const answers = await db.quizQuestionAnswer.groupBy({
       by: ['questionId', 'subjectId', 'isCorrect'],
@@ -74,9 +75,24 @@ questions.post(
         //   in: subjectIds
         // }
       },
-      _count: true,
+      _count: true
     })
+    
+    
+    const answersByQuestionId: Record<string, typeof answers[0]> = {}
+    for (const [index, answer] of answers.entries()) {      
+      const currentAnswer = answersByQuestionId[answer.questionId];
 
+      if (!currentAnswer) {
+        answersByQuestionId[answer.questionId] = answer;
+      } else if (!currentAnswer.isCorrect) {
+        answersByQuestionId[answer.questionId] = answer;
+      }
+    }
+
+    const answersBySubjectId = _.groupBy(Object.values(answersByQuestionId), 'subjectId');
+
+    
     // Count the number of Questions answered correctly, incorrectly, and unanswered
     const statsBySubjectId = {};
     for (const subject of subjectsTotal) {
@@ -86,14 +102,12 @@ questions.post(
         incorrect: 0,
         unanswered: 0,
       }
-      for (const answer of answers) {
-        if (answer.subjectId === subject.subjectId) {
+      for (const answer of answersBySubjectId[subject.subjectId] || []) {
           if (answer.isCorrect) {
             statsBySubjectId[subject.subjectId].correct += 1;
           } else {
             statsBySubjectId[subject.subjectId].incorrect += 1;
           }
-        }
       }
       statsBySubjectId[subject.subjectId].unanswered = statsBySubjectId[subject.subjectId].total - statsBySubjectId[subject.subjectId].correct - statsBySubjectId[subject.subjectId].incorrect
       
