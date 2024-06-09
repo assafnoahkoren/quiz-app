@@ -89,7 +89,11 @@ export const ApiService = {
           config,
         }
       );
-      return res.data;
+      const questions = res.data.map(question => {
+        question.answers = shuffleArray(question.answers || [])
+        return question
+      })
+      return questions;
     },
 
     getMySubjectStats: async () => {
@@ -149,3 +153,11 @@ export const ApiService = {
     },
   },
 };
+
+function shuffleArray<T>(array: T[]): T[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
