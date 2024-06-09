@@ -32,11 +32,11 @@ const SidebarContent = observer(() => {
         </div>
         <div className="w-full h-[1px] bg-black opacity-10"></div>
 
-        <div className="p-3 flex justify-center items-center">
+        {authStore.hasRole('admin') && <div className="p-3 flex justify-center items-center">
             <Switch checked={dataStore.filterQuestionsByVisibility}
                     onChange={() => dataStore.filterQuestionsByVisibility = !dataStore.filterQuestionsByVisibility}/>
             מפורסם
-        </div>
+        </div>}
         <div className="w-full h-[1px] bg-black opacity-10"></div>
 
         <div className="w-[60vw] flex flex-col">

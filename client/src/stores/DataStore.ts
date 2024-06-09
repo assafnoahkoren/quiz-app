@@ -10,7 +10,7 @@ class DataStore {
   selectedSubjectId = "";
   subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
   subjectById: Record<string, SubjectType> = {};
-  filterQuestionsByVisibility?: boolean;
+  filterQuestionsByVisibility?: boolean = true;
   statsBySubjectId: Record<string, SubjectStats> = {};
 
 
