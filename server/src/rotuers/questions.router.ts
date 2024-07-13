@@ -24,8 +24,7 @@ questions.post(
     } else {
       extraWhere.verified = true;
     }
-    
-    const questions = await db.question.findMany({
+    let questions = await db.question.findMany({
       where: {
         subjectId: {
           in: subjectIds,
@@ -41,6 +40,29 @@ questions.post(
         verified: true,
       },
     });
+
+    if (config.includeCorrect === false) {
+    const correctAnswers = await db.quizQuestionAnswer.findMany({
+      where: {
+        subjectId: {
+          in: subjectIds,
+        },
+        isCorrect: true,
+        userId: req.currentUserId
+      },
+      select: {
+        id: true,
+        questionId: true
+      }
+    })
+
+    questions = questions.filter(question => {
+      const count = correctAnswers.filter(answer => answer.questionId === question.id).length;
+      return count <= 3;
+    });
+  }
+
+    
 
     res.json(questions);
   }

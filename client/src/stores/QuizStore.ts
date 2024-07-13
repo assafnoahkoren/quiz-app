@@ -13,6 +13,7 @@ class QuizStore {
   selectedAnswerMap: Record<string, string> = {};
   stateMap: Record<string, "correct" | "incorrect" | undefined> = {};
   saveLoading = false;
+  loading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -34,9 +35,11 @@ class QuizStore {
     this.index = 0;
     this.selectedAnswerMap = {};
     this.stateMap = {};
+    this.loading = true;
     const questions = await ApiService.questions.getRandomBySubjects(
       subjectIds
     );
+    this.loading = false;
     this.questions.forEach(question => question.answers = shuffleArray(question.answers || []))
     this.questions = shuffleArray(questions);
   }

@@ -11,6 +11,7 @@ class DataStore {
   subjectsMap: { [subjectId: string]: { isLoading?: boolean; subject?: any } } = {};
   subjectById: Record<string, SubjectType> = {};
   filterQuestionsByVisibility?: boolean = true;
+  showOnlyQuestionsAnsweredWrong = false;
   statsBySubjectId: Record<string, SubjectStats> = {};
 
 
@@ -22,6 +23,7 @@ class DataStore {
       subjectsMap: observable,
       subjectById: observable,
       filterQuestionsByVisibility: observable,
+      showOnlyQuestionsAnsweredWrong: observable,
       statsBySubjectId: observable,
       getSubjects: action,
       getSubjectsByFilter: action,
@@ -34,7 +36,8 @@ class DataStore {
       properties: [
         "subjectsMap",
         "subjectById",
-        "filterQuestionsByVisibility"
+        "filterQuestionsByVisibility",
+        "showOnlyQuestionsAnsweredWrong",
       ],
       storage: window.localStorage,
     });

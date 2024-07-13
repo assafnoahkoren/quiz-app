@@ -88,7 +88,21 @@ export const QuizPage = observer(() => {
       <div className="question-text text-xl font-bold p-4 pt-1">
         {quizStore.currentQuestion?.text}
       </div>
-      {!quizStore.currentQuestion?.text && <BarLoader color="var(--main-blue)" className="m-auto" />}
+      {quizStore.loading && <BarLoader color="var(--main-blue)" className="m-auto" />}
+      {!quizStore.loading && quizStore.questions.length === 0 && <div className="text-center text-lg  flex flex-col">
+        <span className="text-5xl mb-2">
+        🎉
+        </span>
+        <span className="font-bold mb-2">
+        ענית על כל השאלות נכון בנושא זה
+        </span>
+        <span className="text-sm font-bold opacity-50">
+         על מנת לראות שאלות בנושא זה,
+        </span>
+        <span className="text-sm font-bold opacity-50">
+        בטל את סינון השאלות שנענו נכון
+        </span>
+      </div>}
     </div>
 
     <div>

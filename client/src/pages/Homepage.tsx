@@ -32,7 +32,6 @@ const HomePage = observer(() => {
                 .filter((subject: SubjectType) => subject.parentId === null)
                 .map((subject: SubjectType) => (
                   <SubjectCard
-                    isNew
                     onClick={() => subjectClicked(subject.id)}
                     key={subject.id}
                     name={subject.name}

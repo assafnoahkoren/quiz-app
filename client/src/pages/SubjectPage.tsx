@@ -9,6 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/UIElements/Loading";
 import { quizStore } from "../stores/QuizStore";
 import { SubjectType } from "../types/subjectType";
+import { Switch } from "@mui/material";
 
 const SubjectPage = observer(() => {
   const navigate = useNavigate()
@@ -51,6 +52,15 @@ const SubjectPage = observer(() => {
           </Button>
           {/* what should i do if i have similar rules on different elements? */}
           <div className="back-to-main-button">או בחר נושא למטה</div>
+          <div className="flex items-center justify-center text-sm bg-slate-100 w-full rounded">
+            <div className="text-xs text-white bg-red-500 px-2 rounded-full">
+              חדש
+            </div>
+          <Switch checked={dataStore.showOnlyQuestionsAnsweredWrong}
+                    onChange={() => dataStore.showOnlyQuestionsAnsweredWrong = !dataStore.showOnlyQuestionsAnsweredWrong}/>
+            הסתר שאלות שצדקתי בהן 3 פעמים
+          </div>
+          
           {/* what should i do if i have single rule? */}
           <div className="subjects-tree-title">עץ נושאים</div>
         </div>
