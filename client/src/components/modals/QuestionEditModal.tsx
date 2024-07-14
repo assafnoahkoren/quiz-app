@@ -2,7 +2,9 @@ import NiceModal from '@ebay/nice-modal-react';
 import { quizStore } from '../../stores/QuizStore';
 import { observer } from 'mobx-react-lite';
 import { BarLoader } from 'react-spinners';
-import { Switch } from '@mui/material';
+import { Autocomplete, Switch, TextField } from '@mui/material';
+import { dataStore } from '../../stores/DataStore';
+import { useEffect } from 'react';
 
 
 export const QuestionEditModal = observer(() => {
@@ -10,6 +12,11 @@ export const QuestionEditModal = observer(() => {
     if (e.currentTarget != e.target) return;
     NiceModal.remove('QuestionEditModal');
   }
+  useEffect(() => {
+    dataStore.getSubjects();
+  }, [])
+
+
   return <div onClick={closeModal} className='fixed z-50 left-0 top-0 w-full h-full flex justify-center items-center py-10 px-5 bg-[#00000050]'>
     <div className='w-full bg-white p-4 rounded-xl'>
       <div className='flex justify-between items-center mb-2'>
@@ -21,6 +28,15 @@ export const QuestionEditModal = observer(() => {
       </div>
       <div>
         <label className="block mb-2 text-sm font-medium text-gray-900 ">שאלה</label>
+        <Autocomplete
+            disablePortal
+            value={dataStore.subjects.find(subject => subject.id === quizStore.currentQuestion.subjectId)}
+            options={dataStore.subjects}
+            onChange={(e, value) => quizStore.currentQuestion.subjectId = value?.id || '' }
+            getOptionLabel={subject => subject.name}
+            sx={{marginBottom: 2, borderRadius: 10}}
+            renderInput={(params) => <TextField {...params} />}
+          />
         <textarea value={quizStore.currentQuestion.text} onChange={(e) => quizStore.currentQuestion.text = e.target.value} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
         <br />
         <label className="block mb-2 text-sm font-medium text-gray-900 ">תשובות</label>
@@ -33,7 +49,7 @@ export const QuestionEditModal = observer(() => {
           </div>
         ))}
         <div>
-          <Switch checked={quizStore.currentQuestion.verified} onChange={() => quizStore.currentQuestion.verified = !quizStore.currentQuestion.verified}/>
+          <Switch checked={quizStore.currentQuestion.verified} onChange={() => quizStore.currentQuestion.verified = !quizStore.currentQuestion.verified} />
           מפורסם
         </div>
         <br />
